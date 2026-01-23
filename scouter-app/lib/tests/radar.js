@@ -109,12 +109,13 @@ function formatAxiosError(error) {
 }
 
 /**
- * Run caching strategy test
+ * Run OAS validation test
+ * Tests that F5 XC is enforcing OpenAPI spec by blocking undocumented endpoints
  */
-async function testCaching(baseUrl, sendUpdate) {
+async function testOasValidation(baseUrl, sendUpdate) {
   const results = {
-    name: 'Caching Strategy',
-    test: 'caching',
+    name: 'OAS Validation',
+    test: 'oas-validation',
     status: 'fail',
     powerLevel: 0,
     details: [],
@@ -122,84 +123,50 @@ async function testCaching(baseUrl, sendUpdate) {
   };
 
   try {
-    // Phase 1: First request (cache miss expected)
-    sendUpdate({ phase: 'Sending first request (cache miss)...' });
-    const start1 = Date.now();
-    const response1 = await axios.get(`${baseUrl}/api/radar/scan`, {
+    // Phase 1: Verify documented endpoint works
+    sendUpdate({ phase: 'Verifying documented endpoint (/api/radar/scan)...' });
+    const validResponse = await axios.get(`${baseUrl}/api/radar/scan`, {
       timeout: 10000,
       validateStatus: () => true
     });
-    const time1 = Date.now() - start1;
-
-    const cacheHeaders1 = {
-      'x-cache': response1.headers['x-cache'],
-      'age': response1.headers['age'],
-      'cache-control': response1.headers['cache-control'],
-      'x-cache-status': response1.headers['x-cache-status']
-    };
 
     results.debug.responses.push({
-      phase: 'first-request',
-      status: response1.status,
-      timing: time1,
-      cacheHeaders: cacheHeaders1
+      phase: 'documented-endpoint',
+      url: '/api/radar/scan',
+      status: validResponse.status
     });
 
-    // Phase 2: Second request (cache hit expected)
-    sendUpdate({ phase: 'Sending second request (cache hit expected)...' });
-    const start2 = Date.now();
-    const response2 = await axios.get(`${baseUrl}/api/radar/scan`, {
-      timeout: 10000,
-      validateStatus: () => true
-    });
-    const time2 = Date.now() - start2;
-
-    const cacheHeaders2 = {
-      'x-cache': response2.headers['x-cache'],
-      'age': response2.headers['age'],
-      'cache-control': response2.headers['cache-control'],
-      'x-cache-status': response2.headers['x-cache-status']
-    };
-
-    results.debug.responses.push({
-      phase: 'second-request',
-      status: response2.status,
-      timing: time2,
-      cacheHeaders: cacheHeaders2
-    });
-
-    // Check for cache headers
-    const hasCacheHeaders = cacheHeaders2['x-cache'] || cacheHeaders2['age'] || cacheHeaders2['x-cache-status'];
-    const isCacheHit = (cacheHeaders2['x-cache'] || '').toLowerCase().includes('hit') ||
-                       (cacheHeaders2['x-cache-status'] || '').toLowerCase().includes('hit');
-    const timingImproved = time2 < time1;
-
-    results.details.push({
-      phase: 'First request',
-      result: `${time1}ms${cacheHeaders1['x-cache'] ? ` (X-Cache: ${cacheHeaders1['x-cache']})` : ''}`
-    });
-    results.details.push({
-      phase: 'Second request',
-      result: `${time2}ms${cacheHeaders2['x-cache'] ? ` (X-Cache: ${cacheHeaders2['x-cache']})` : ''}`
-    });
-
-    if (hasCacheHeaders) {
+    if (validResponse.status === 200) {
+      results.details.push({ phase: 'Documented endpoint', result: '200 OK - /api/radar/scan accessible' });
       results.powerLevel = 1000;
-      results.details.push({ phase: 'Cache headers', result: '✓ Present' });
     } else {
-      results.details.push({ phase: 'Cache headers', result: 'Not detected' });
+      results.details.push({ phase: 'Documented endpoint', result: `${validResponse.status} - /api/radar/scan failed` });
+      return results;
     }
 
-    if (isCacheHit) {
-      results.powerLevel += 1500;
+    // Phase 2: Test undocumented endpoint (should be blocked by OAS enforcement)
+    sendUpdate({ phase: 'Testing undocumented endpoint (/api/radar/shadow-protocol)...' });
+    const shadowResponse = await axios.get(`${baseUrl}/api/radar/shadow-protocol`, {
+      timeout: 10000,
+      validateStatus: () => true
+    });
+
+    results.debug.responses.push({
+      phase: 'undocumented-endpoint',
+      url: '/api/radar/shadow-protocol',
+      status: shadowResponse.status,
+      headers: shadowResponse.headers
+    });
+
+    if (shadowResponse.status === 403) {
+      results.details.push({ phase: 'Shadow endpoint', result: 'Blocked (403) - OAS enforcement active' });
+      results.powerLevel += 3000;
       results.status = 'pass';
-    }
-
-    if (timingImproved && time1 - time2 > 10) {
-      const improvement = Math.round(((time1 - time2) / time1) * 100);
-      results.powerLevel += Math.min(improvement * 10, 1500);
-      results.details.push({ phase: 'Performance', result: `✓ ${improvement}% faster on second request` });
-      if (!isCacheHit) results.status = 'pass';
+    } else if (shadowResponse.status === 200) {
+      results.details.push({ phase: 'Shadow endpoint', result: '200 OK - Not blocked (OAS enforcement not configured)' });
+      results.details.push({ phase: 'Action needed', result: 'Upload OpenAPI spec to F5 XC and enable enforcement' });
+    } else {
+      results.details.push({ phase: 'Shadow endpoint', result: `${shadowResponse.status} - Unexpected response` });
     }
 
   } catch (error) {
@@ -409,7 +376,7 @@ async function testSecurity(baseUrl, sendUpdate) {
 
 module.exports = {
   'rate-limiting': testRateLimiting,
-  'caching': testCaching,
+  'oas-validation': testOasValidation,
   'performance': testPerformance,
   'security': testSecurity
 };

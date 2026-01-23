@@ -26,22 +26,10 @@
     <header class="hero hero-small">
         <div class="hero-content">
             <h1>Demo Applications</h1>
-            <p class="tagline">Interactive API & E-Commerce Demos</p>
+            <p class="tagline">API, E-Commerce & Real-Time WebSocket Apps</p>
             <div class="speed-line"></div>
         </div>
     </header>
-
-    <!-- Apps Overview -->
-    <section class="section overview">
-        <h2 class="section-title">Application Overview</h2>
-        <p class="section-intro">Two containerized demo applications built to showcase F5 Distributed Cloud capabilities. Use these to demonstrate API security, rate limiting, WAF protection, and multi-cloud deployment scenarios.</p>
-    </section>
-
-    <div class="divider">
-        <div class="speed-lines">
-            <span></span><span></span><span></span>
-        </div>
-    </div>
 
     <!-- Dragon Radar API -->
     <section class="section">
@@ -63,7 +51,18 @@
                 </div>
             </div>
 
-            <p class="app-description">A dynamic API that simulates the Dragon Radar device, returning real-time positions of the seven Dragon Balls. Positions drift over time to simulate movement, making it ideal for demonstrating caching strategies and API performance optimization.</p>
+            <p class="app-description">A dynamic API that simulates the Dragon Radar device, returning real-time positions of the seven Dragon Balls. Positions drift over time to simulate movement, making it ideal for demonstrating API security and performance optimization.</p>
+
+            <div class="app-download">
+                <a href="dragon-radar-openapi.yaml" download class="download-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    Download OpenAPI Spec
+                </a>
+            </div>
 
             <div class="app-details">
                 <div class="detail-group">
@@ -71,22 +70,22 @@
                     <div class="endpoint-list">
                         <div class="endpoint">
                             <span class="method get">GET</span>
-                            <code>/api/balls</code>
+                            <code>/api/radar/scan</code>
                             <span class="endpoint-desc">Get all 7 Dragon Ball positions</span>
                         </div>
                         <div class="endpoint">
                             <span class="method get">GET</span>
-                            <code>/api/balls/:id</code>
+                            <code>/api/radar/ball/:id</code>
                             <span class="endpoint-desc">Get single ball position (1-7)</span>
                         </div>
                         <div class="endpoint">
                             <span class="method get">GET</span>
-                            <code>/api/nearest?lat=X&lng=Y</code>
+                            <code>/api/radar/distance?lat=X&long=Y</code>
                             <span class="endpoint-desc">Find nearest ball to coordinates</span>
                         </div>
                         <div class="endpoint">
                             <span class="method get">GET</span>
-                            <code>/health</code>
+                            <code>/api/radar/health</code>
                             <span class="endpoint-desc">Health check endpoint</span>
                         </div>
                     </div>
@@ -96,7 +95,7 @@
                     <h3>Demo Scenarios</h3>
                     <ul class="scenario-list">
                         <li><strong>API Rate Limiting:</strong> Configure F5 XC rate limiting policies</li>
-                        <li><strong>Caching:</strong> Demonstrate CDN caching with TTL strategies</li>
+                        <li><strong>OAS Validation:</strong> Enforce OpenAPI spec to block undocumented endpoints</li>
                         <li><strong>Global Performance:</strong> Show latency improvements with edge deployment</li>
                         <li><strong>API Security:</strong> Apply schema validation and threat protection</li>
                     </ul>

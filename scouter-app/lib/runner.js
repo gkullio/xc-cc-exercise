@@ -93,7 +93,7 @@ async function runTests(ws, target, fqdn, tests) {
 function getTestDisplayName(testName) {
   const names = {
     'rate-limiting': 'Rate Limiting',
-    'caching': 'Caching Strategy',
+    'oas-validation': 'OAS Validation',
     'performance': 'Global Performance',
     'security': 'API Security',
     'waf': 'WAF Protection',
@@ -109,7 +109,7 @@ function getTestDisplayName(testName) {
 function getMaxPowerLevel(testName) {
   const maxLevels = {
     'rate-limiting': 4000,
-    'caching': 4000,
+    'oas-validation': 4000,
     'performance': 3000,
     'security': 3000,
     'waf': 4000,

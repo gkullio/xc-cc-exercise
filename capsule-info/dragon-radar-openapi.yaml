@@ -1,0 +1,196 @@
+openapi: 3.0.3
+info:
+  title: Dragon Radar API
+  description: |
+    A dynamic API that simulates the Dragon Radar device, returning real-time
+    positions of the seven Dragon Balls. Developed by Capsule Corporation's
+    West City Research Lab.
+  version: 1.0.0
+  contact:
+    name: Capsule Corporation
+    url: https://capsulecorp.example.com
+servers:
+  - url: /api/radar
+    description: Dragon Radar API base path
+paths:
+  /health:
+    get:
+      summary: Health check
+      description: Returns the operational status of the Dragon Radar system
+      operationId: getHealth
+      responses:
+        '200':
+          description: Radar system operational
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: operational
+                  message:
+                    type: string
+                    example: Shenron awaits
+                  timestamp:
+                    type: string
+                    format: date-time
+  /scan:
+    get:
+      summary: Scan all Dragon Balls
+      description: Returns current positions and signal strength for all seven Dragon Balls
+      operationId: scanAllBalls
+      responses:
+        '200':
+          description: Successful scan
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  timestamp:
+                    type: string
+                    format: date-time
+                  source:
+                    type: string
+                    example: West City Research Lab
+                  processingTimeMs:
+                    type: integer
+                  count:
+                    type: integer
+                    example: 7
+                  balls:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DragonBall'
+  /ball/{id}:
+    get:
+      summary: Get single Dragon Ball
+      description: Returns position and details for a specific Dragon Ball (1-7)
+      operationId: getBallById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Dragon Ball number (1-7 stars)
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 7
+      responses:
+        '200':
+          description: Ball found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  timestamp:
+                    type: string
+                    format: date-time
+                  source:
+                    type: string
+                  ball:
+                    $ref: '#/components/schemas/DragonBall'
+        '400':
+          description: Invalid ball ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Ball not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /distance:
+    get:
+      summary: Find nearest Dragon Ball
+      description: Calculates distance from provided coordinates to the nearest Dragon Ball
+      operationId: getNearestBall
+      parameters:
+        - name: lat
+          in: query
+          required: true
+          description: Latitude (-90 to 90)
+          schema:
+            type: number
+            format: float
+            minimum: -90
+            maximum: 90
+        - name: long
+          in: query
+          required: true
+          description: Longitude (-180 to 180)
+          schema:
+            type: number
+            format: float
+            minimum: -180
+            maximum: 180
+      responses:
+        '200':
+          description: Nearest ball found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  timestamp:
+                    type: string
+                    format: date-time
+                  source:
+                    type: string
+                  searchLocation:
+                    type: object
+                    properties:
+                      lat:
+                        type: number
+                      long:
+                        type: number
+                  nearest:
+                    $ref: '#/components/schemas/DragonBall'
+                  distanceKm:
+                    type: number
+                    description: Distance in kilometers
+        '400':
+          description: Invalid coordinates
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    DragonBall:
+      type: object
+      properties:
+        id:
+          type: integer
+          minimum: 1
+          maximum: 7
+        stars:
+          type: integer
+          minimum: 1
+          maximum: 7
+        lat:
+          type: number
+          format: float
+        long:
+          type: number
+          format: float
+        signal:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 1
+          description: Signal strength (0-1)
+        location:
+          type: string
+          description: Human-readable location name
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string

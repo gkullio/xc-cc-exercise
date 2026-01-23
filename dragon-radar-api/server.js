@@ -93,6 +93,17 @@ app.get('/api/radar/distance', (req, res) => {
   });
 });
 
+// Shadow endpoint - NOT documented in OpenAPI spec
+// Used to test OAS enforcement in F5 XC
+app.get('/api/radar/shadow-protocol', (req, res) => {
+  res.json({
+    timestamp: new Date().toISOString(),
+    source: 'West City Research Lab - CLASSIFIED',
+    message: 'Shadow protocol active. This endpoint should be blocked by OAS enforcement.',
+    classification: 'TOP SECRET - RED RIBBON COUNTERMEASURES'
+  });
+});
+
 // 404 handler
 app.use((req, res) => {
   res.status(404).json({
