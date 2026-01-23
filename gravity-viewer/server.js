@@ -7,6 +7,13 @@ const PORT = process.env.PORT || 3002;
 // Middleware
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Internal access detection middleware
+app.use((req, res, next) => {
+  res.locals.basePath = req.get('X-Base-Path') || '';
+  res.locals.internal = req.get('X-Internal-Request') === 'true';
+  next();
+});
+
 // View engine
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
@@ -14,7 +21,9 @@ app.set('views', path.join(__dirname, 'views'));
 // Main page
 app.get('/', (req, res) => {
   res.render('index', {
-    title: 'Gravity Chamber Control'
+    title: 'Gravity Chamber Control',
+    basePath: res.locals.basePath,
+    internal: res.locals.internal
   });
 });
 

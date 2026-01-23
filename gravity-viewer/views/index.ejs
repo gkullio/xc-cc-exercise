@@ -4,9 +4,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><%= title %> | Capsule Corp</title>
-  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="<%= basePath %>/css/styles.css">
+  <% if (internal) { %>
+  <link rel="stylesheet" href="<%= basePath %>/css/internal-banner.css">
+  <% } %>
 </head>
 <body>
+<% if (internal) { %>
+<div class="internal-banner">
+  <span>&#9888;</span>
+  <span>INTERNAL ACCESS ONLY</span>
+</div>
+<% } %>
   <div class="scanlines"></div>
 
   <header class="header">
@@ -88,6 +97,6 @@
     <p>GRAVITY CHAMBER MONITORING SYSTEM v1.0</p>
   </footer>
 
-  <script src="/js/viewer.js"></script>
+  <script src="<%= basePath %>/js/viewer.js"></script>
 </body>
 </html>
