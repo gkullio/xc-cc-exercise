@@ -9,8 +9,7 @@ services:
     ports:
       - "6901:6901"
     environment:
-      - VNC_PW=lab
-      - VNC_USER=lab
+      - VNC_PW=lablab
     shm_size: "2g"
     restart: always
     networks:
