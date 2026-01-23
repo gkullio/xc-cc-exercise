@@ -3,43 +3,7 @@ networks:
     driver: bridge
 
 services:
-  # --- Browser Access ---
-  chrome:
-    build: ./chrome
-    ports:
-      - "6901:6901"
-    environment:
-      - VNCOPTIONS=-disableBasicAuth
-    shm_size: "2g"
-    restart: always
-    networks:
-      - lab
-    depends_on:
-      - nginx
-
-  # --- Reverse Proxy ---
-  nginx:
-    build: ./nginx
-    ports:
-      - "80:80"
-      - "6080:6080"
-    restart: always
-    networks:
-      lab:
-        aliases:
-          - cc.local
-          - catalog.cc.local
-          - info.cc.local
-          - store.cc.local
-          - radar.cc.local
-          - gravity.cc.local
-    depends_on:
-      - capsule-info
-      - capsule-store
-      - dragon-radar-api
-      - gravity-viewer
-
-  # --- Internal Services (8080 range) ---
+  # --- Entry Points (8080 range) ---
   capsule-info:
     image: ghcr.io/f5xc-salesdemos/capsule-info:latest
     pull_policy: always
@@ -51,16 +15,19 @@ services:
     depends_on:
       - scouter-app
 
-  scouter-app:
-    image: ghcr.io/f5xc-salesdemos/scouter-app:latest
-    pull_policy: always
+  catalog:
+    build: ./catalog
     ports:
-      - "8081:3002"
+      - "8081:8081"
     restart: always
     networks:
       - lab
+    depends_on:
+      - capsule-store
+      - dragon-radar-api
+      - gravity-viewer
 
-  # --- Origin Pool Targets (3000 range) ---
+  # --- App Ports (3000 range) ---
   capsule-store:
     image: ghcr.io/f5xc-salesdemos/capsule-store:latest
     pull_policy: always
@@ -83,7 +50,22 @@ services:
     image: ghcr.io/f5xc-salesdemos/gravity-viewer:latest
     pull_policy: always
     ports:
-      - "3002:3004"
+      - "3002:3002"
+    restart: always
+    networks:
+      - lab
+
+  # --- Internal Services (4000 range) ---
+  scouter-app:
+    image: ghcr.io/f5xc-salesdemos/scouter-app:latest
+    pull_policy: always
+    restart: always
+    networks:
+      - lab
+
+  gravity-chamber:
+    image: ghcr.io/f5xc-salesdemos/gravity-chamber:latest
+    pull_policy: always
     restart: always
     networks:
       - lab
