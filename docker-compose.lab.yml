@@ -1,3 +1,7 @@
+networks:
+  lab:
+    driver: bridge
+
 services:
   # --- Browser Access ---
   chrome:
@@ -6,10 +10,10 @@ services:
       - "6901:6901"
     environment:
       - VNC_PW=
-    extra_hosts:
-      - "cc.local:nginx"
     shm_size: "2g"
     restart: always
+    networks:
+      - lab
     depends_on:
       - nginx
 
@@ -19,6 +23,10 @@ services:
     ports:
       - "80:80"
     restart: always
+    networks:
+      lab:
+        aliases:
+          - cc.local
     depends_on:
       - capsule-info
       - capsule-store
@@ -32,6 +40,8 @@ services:
     ports:
       - "8080:8080"
     restart: always
+    networks:
+      - lab
     depends_on:
       - scouter-app
 
@@ -41,6 +51,8 @@ services:
     ports:
       - "8081:3002"
     restart: always
+    networks:
+      - lab
 
   # --- Origin Pool Targets (3000 range) ---
   capsule-store:
@@ -49,6 +61,8 @@ services:
     ports:
       - "3000:3000"
     restart: always
+    networks:
+      - lab
 
   dragon-radar-api:
     image: ghcr.io/f5xc-salesdemos/dragon-radar-api:latest
@@ -56,6 +70,8 @@ services:
     ports:
       - "3001:3001"
     restart: always
+    networks:
+      - lab
 
   gravity-viewer:
     image: ghcr.io/f5xc-salesdemos/gravity-viewer:latest
@@ -63,3 +79,5 @@ services:
     ports:
       - "3002:3004"
     restart: always
+    networks:
+      - lab
