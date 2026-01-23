@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %> | Capsule Corp</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <div class="scanlines"></div>
+
+  <header class="header">
+    <div class="logo">
+      <span class="logo-icon">⬡</span>
+      <span class="logo-text">CAPSULE CORP</span>
+    </div>
+    <div class="header-title">GRAVITY CHAMBER CONTROL SYSTEM</div>
+    <div class="header-location">WEST CITY HQ</div>
+  </header>
+
+  <main class="main">
+    <div class="connection-panel">
+      <label for="fqdn">CHAMBER FQDN:</label>
+      <input type="text" id="fqdn" placeholder="gravity.westcity.local" autocomplete="off">
+      <button id="connect-btn" class="btn-connect">CONNECT</button>
+    </div>
+
+    <div class="status-bar">
+      <span id="connection-status" class="status disconnected">DISCONNECTED</span>
+    </div>
+
+    <div class="control-panel">
+      <div class="gauge-container">
+        <div class="gauge">
+          <div class="gauge-ring">
+            <svg viewBox="0 0 200 200">
+              <circle class="gauge-bg" cx="100" cy="100" r="85" />
+              <circle id="gauge-fill" class="gauge-fill" cx="100" cy="100" r="85" />
+            </svg>
+          </div>
+          <div class="gauge-center">
+            <div id="gravity-value" class="gravity-value">---</div>
+            <div class="gravity-unit">x GRAVITY</div>
+          </div>
+        </div>
+        <div class="gauge-label">GRAVITY LEVEL</div>
+      </div>
+
+      <div class="info-panel">
+        <div class="info-row">
+          <span class="info-label">STATUS</span>
+          <span id="chamber-status" class="info-value status-value">---</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">USER</span>
+          <span id="session-user" class="info-value">---</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">TIME</span>
+          <span id="session-time" class="info-value">--:--</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">TARGET</span>
+          <span id="session-target" class="info-value">--:--</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">POWER</span>
+          <span id="power-output" class="info-value">--- kW</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">SAFE MAX</span>
+          <span id="safety-threshold" class="info-value">---x</span>
+        </div>
+      </div>
+    </div>
+
+    <div id="error-overlay" class="error-overlay hidden">
+      <div class="error-content">
+        <div class="error-icon">⚠</div>
+        <div class="error-title">LINK FAILED</div>
+        <div id="error-message" class="error-message">CHAMBER UNREACHABLE</div>
+        <button id="error-dismiss" class="btn-dismiss">DISMISS</button>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>GRAVITY CHAMBER MONITORING SYSTEM v1.0</p>
+  </footer>
+
+  <script src="/js/viewer.js"></script>
+</body>
+</html>
