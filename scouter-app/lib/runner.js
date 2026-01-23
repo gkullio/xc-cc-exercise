@@ -1,9 +1,11 @@
 const radarTests = require('./tests/radar');
 const storeTests = require('./tests/store');
+const chamberTests = require('./tests/chamber');
 
 const testSuites = {
   radar: radarTests,
-  store: storeTests
+  store: storeTests,
+  chamber: chamberTests
 };
 
 /**
@@ -97,7 +99,9 @@ function getTestDisplayName(testName) {
     'waf': 'WAF Protection',
     'bot': 'Bot Protection',
     'ddos': 'DDoS Mitigation',
-    'pci': 'PCI Compliance'
+    'pci': 'PCI Compliance',
+    'availability': 'Chamber Availability',
+    'private-network': 'Private Network'
   };
   return names[testName] || testName;
 }
@@ -111,7 +115,9 @@ function getMaxPowerLevel(testName) {
     'waf': 4000,
     'bot': 3100,
     'ddos': 3000,
-    'pci': 2500
+    'pci': 2500,
+    'availability': 3000,
+    'private-network': 3000
   };
   return maxLevels[testName] || 3000;
 }
