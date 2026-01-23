@@ -9,7 +9,7 @@ services:
     ports:
       - "6901:6901"
     environment:
-      - VNC_PW=lablab
+      - VNCOPTIONS=-disableBasicAuth
     shm_size: "2g"
     restart: always
     networks:
