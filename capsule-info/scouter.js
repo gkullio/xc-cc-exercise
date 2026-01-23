@@ -15,6 +15,10 @@ class ScouterApp {
     document.getElementById('store-scan').addEventListener('click', () => {
       this.startScan('store');
     });
+
+    document.getElementById('chamber-scan').addEventListener('click', () => {
+      this.startScan('chamber');
+    });
   }
 
   getSelectedTests(target) {

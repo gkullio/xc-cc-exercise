@@ -156,6 +156,56 @@
                 </div>
             </div>
         </section>
+
+        <!-- Gravity Chamber Panel -->
+        <section class="scouter-panel" id="chamber-panel">
+            <div class="scouter-panel-header">
+                <div class="scouter-panel-icon chamber-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M12 6v12M6 12h12"/>
+                        <circle cx="12" cy="12" r="4"/>
+                    </svg>
+                </div>
+                <h2>Gravity Chamber</h2>
+            </div>
+
+            <div class="scouter-panel-body">
+                <div class="scouter-input-group">
+                    <label for="chamber-fqdn">Target FQDN</label>
+                    <input type="text" id="chamber-fqdn" placeholder="gravity.westcity.local">
+                </div>
+
+                <div class="scouter-test-options">
+                    <label class="scouter-test-option">
+                        <input type="checkbox" name="chamber-test" value="availability" checked>
+                        <span class="scouter-checkbox"></span>
+                        <span>Chamber Availability</span>
+                    </label>
+                    <label class="scouter-test-option">
+                        <input type="checkbox" name="chamber-test" value="private-network" checked>
+                        <span class="scouter-checkbox"></span>
+                        <span>Private Network (RFC1918)</span>
+                    </label>
+                </div>
+
+                <button class="scouter-scan-btn" id="chamber-scan">
+                    <span class="btn-icon">&#9889;</span>
+                    SCAN POWER LEVEL
+                </button>
+
+                <div class="scouter-results" id="chamber-results">
+                    <div class="scouter-results-placeholder">
+                        Select tests and enter FQDN to begin scanning
+                    </div>
+                </div>
+
+                <div class="scouter-power-display" id="chamber-power-level" style="display: none;">
+                    <span class="power-label">POWER LEVEL</span>
+                    <span class="power-value">0</span>
+                </div>
+            </div>
+        </section>
     </main>
 
     <!-- Footer -->

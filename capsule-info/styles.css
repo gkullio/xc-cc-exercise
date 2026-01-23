@@ -1106,6 +1106,13 @@ p {
     box-shadow: 0 0 20px var(--color-primary-glow);
 }
 
+.gravity-chamber-icon {
+    background: linear-gradient(135deg, rgba(138, 43, 226, 0.2), rgba(138, 43, 226, 0.1));
+    color: #8A2BE2;
+    border: 2px solid #8A2BE2;
+    box-shadow: 0 0 20px rgba(138, 43, 226, 0.3);
+}
+
 .app-title h2 {
     margin-bottom: 0.25rem;
 }
@@ -1181,6 +1188,11 @@ p {
 .method.page {
     background: rgba(159, 122, 234, 0.2);
     color: #9f7aea;
+}
+
+.method.ws {
+    background: rgba(138, 43, 226, 0.2);
+    color: #8A2BE2;
 }
 
 .endpoint code {
@@ -1510,6 +1522,10 @@ p {
 
 .scouter-panel-icon.store-icon svg {
     stroke: var(--color-secondary);
+}
+
+.scouter-panel-icon.chamber-icon svg {
+    stroke: #8A2BE2;
 }
 
 .scouter-panel-body {
