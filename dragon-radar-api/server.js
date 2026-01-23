@@ -1,8 +1,12 @@
 const express = require('express');
+const path = require('path');
 const { getAllBalls, getBallById, getNearestBall } = require('./lib/radar');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
+
+// Serve OpenAPI spec
+app.use('/openapi.yaml', express.static(path.join(__dirname, 'openapi.yaml')));
 
 // Add rate limit headers to all responses (for F5 demo)
 app.use((req, res, next) => {

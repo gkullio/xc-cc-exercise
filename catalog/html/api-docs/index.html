@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dragon Radar API | Capsule Corporation</title>
+    <link rel="stylesheet" href="https://unpkg.com/swagger-ui-dist@5/swagger-ui.css">
+    <style>
+        :root {
+            --color-bg-dark: #0D1B2A;
+            --color-internal-banner: #f59e0b;
+        }
+        body {
+            margin: 0;
+            background: var(--color-bg-dark);
+        }
+        .internal-banner {
+            background: var(--color-internal-banner);
+            color: #000;
+            text-align: center;
+            padding: 0.75rem 1rem;
+            font-family: system-ui, sans-serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .swagger-ui {
+            background: var(--color-bg-dark);
+        }
+        .swagger-ui .topbar {
+            display: none;
+        }
+        .swagger-ui .info .title {
+            color: #fff;
+        }
+        .swagger-ui .info .description p {
+            color: #a0aec0;
+        }
+        .swagger-ui .scheme-container {
+            background: #1B263B;
+        }
+        .swagger-ui .opblock-tag {
+            color: #fff;
+            border-bottom-color: rgba(255,255,255,0.1);
+        }
+        .swagger-ui .opblock {
+            background: #1B263B;
+            border-color: rgba(255,255,255,0.1);
+        }
+        .swagger-ui .opblock .opblock-summary-method {
+            font-weight: 700;
+        }
+        .swagger-ui .opblock .opblock-summary-description {
+            color: #a0aec0;
+        }
+        .swagger-ui .opblock .opblock-section-header {
+            background: #243447;
+        }
+        .swagger-ui .opblock .opblock-section-header h4 {
+            color: #fff;
+        }
+        .swagger-ui table thead tr th {
+            color: #a0aec0;
+        }
+        .swagger-ui .parameter__name {
+            color: #fff;
+        }
+        .swagger-ui .parameter__type {
+            color: #a0aec0;
+        }
+        .swagger-ui .response-col_status {
+            color: #fff;
+        }
+        .swagger-ui .response-col_description {
+            color: #a0aec0;
+        }
+    </style>
+</head>
+<body>
+    <div class="internal-banner">
+        &#9888; INTERNAL ACCESS ONLY
+    </div>
+    <div id="swagger-ui"></div>
+    <script src="https://unpkg.com/swagger-ui-dist@5/swagger-ui-bundle.js"></script>
+    <script>
+        window.onload = function() {
+            SwaggerUIBundle({
+                url: "/api/radar/openapi.yaml",
+                dom_id: '#swagger-ui',
+                presets: [
+                    SwaggerUIBundle.presets.apis,
+                    SwaggerUIBundle.SwaggerUIStandalonePreset
+                ],
+                layout: "BaseLayout",
+                deepLinking: true
+            });
+        };
+    </script>
+</body>
+</html>
