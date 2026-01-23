@@ -24,3 +24,9 @@ services:
     ports:
       - "3002:3002"
     restart: unless-stopped
+
+  gravity-viewer:
+    build: ./gravity-viewer
+    ports:
+      - "3004:3004"
+    restart: unless-stopped
