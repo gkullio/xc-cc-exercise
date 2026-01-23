@@ -28,6 +28,7 @@ services:
       lab:
         aliases:
           - cc.local
+          - catalog.cc.local
           - info.cc.local
           - store.cc.local
           - radar.cc.local

@@ -4,22 +4,22 @@
       "bookmark_bar": {
          "children": [
             {
-               "name": "Portal",
+               "name": "App Catalog",
                "type": "url",
-               "url": "http://info.cc.local"
+               "url": "http://catalog.cc.local"
             },
             {
-               "name": "Capsule Store",
+               "name": "Capsule Store (Internal)",
                "type": "url",
                "url": "http://store.cc.local"
             },
             {
-               "name": "Dragon Radar API",
+               "name": "Dragon Radar API (Internal)",
                "type": "url",
                "url": "http://radar.cc.local"
             },
             {
-               "name": "Gravity Viewer",
+               "name": "Gravity Viewer (Internal)",
                "type": "url",
                "url": "http://gravity.cc.local"
             }
