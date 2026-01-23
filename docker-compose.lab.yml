@@ -5,7 +5,7 @@ networks:
 services:
   # --- Browser Access ---
   chrome:
-    image: kasmweb/chrome:1.15.0
+    build: ./chrome
     ports:
       - "6901:6901"
     environment:
@@ -28,6 +28,10 @@ services:
       lab:
         aliases:
           - cc.local
+          - info.cc.local
+          - store.cc.local
+          - radar.cc.local
+          - gravity.cc.local
     depends_on:
       - capsule-info
       - capsule-store

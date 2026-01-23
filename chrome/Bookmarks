@@ -1,0 +1,42 @@
+{
+   "checksum": "",
+   "roots": {
+      "bookmark_bar": {
+         "children": [
+            {
+               "name": "Portal",
+               "type": "url",
+               "url": "http://info.cc.local"
+            },
+            {
+               "name": "Capsule Store",
+               "type": "url",
+               "url": "http://store.cc.local"
+            },
+            {
+               "name": "Dragon Radar API",
+               "type": "url",
+               "url": "http://radar.cc.local"
+            },
+            {
+               "name": "Gravity Viewer",
+               "type": "url",
+               "url": "http://gravity.cc.local"
+            }
+         ],
+         "name": "Bookmarks bar",
+         "type": "folder"
+      },
+      "other": {
+         "children": [],
+         "name": "Other bookmarks",
+         "type": "folder"
+      },
+      "synced": {
+         "children": [],
+         "name": "Mobile bookmarks",
+         "type": "folder"
+      }
+   },
+   "version": 1
+}
