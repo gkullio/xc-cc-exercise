@@ -73,6 +73,11 @@ class ScouterApp {
     ws.onmessage = (event) => {
       const data = JSON.parse(event.data);
       this.handleMessage(data);
+
+      // Close WebSocket after scan completes
+      if (data.type === 'scan-complete') {
+        ws.close();
+      }
     };
 
     ws.onerror = (error) => {
