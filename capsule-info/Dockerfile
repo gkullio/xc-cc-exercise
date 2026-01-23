@@ -18,7 +18,7 @@ RUN echo 'server { \
     } \
     \
     location /ws/scan { \
-        proxy_pass http://scouter-app:3002; \
+        proxy_pass http://scouter-app:4000; \
         proxy_http_version 1.1; \
         proxy_set_header Upgrade $http_upgrade; \
         proxy_set_header Connection "upgrade"; \

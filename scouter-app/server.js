@@ -5,7 +5,7 @@ const path = require('path');
 const { runTests } = require('./lib/runner');
 
 const app = express();
-const PORT = process.env.PORT || 3002;
+const PORT = process.env.PORT || 4000;
 
 // Serve static files
 app.use(express.static(path.join(__dirname, 'public')));

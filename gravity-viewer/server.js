@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 
 const app = express();
-const PORT = process.env.PORT || 3004;
+const PORT = process.env.PORT || 3002;
 
 // Middleware
 app.use(express.static(path.join(__dirname, 'public')));
@@ -29,5 +29,5 @@ app.get('/api/health', (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Gravity Viewer running on port ${PORT}`);
-  console.log('Open http://localhost:3004 in your browser');
+  console.log(`Open http://localhost:${PORT} in your browser`);
 });
