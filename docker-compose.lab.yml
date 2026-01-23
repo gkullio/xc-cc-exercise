@@ -1,0 +1,65 @@
+services:
+  # --- Browser Access ---
+  chrome:
+    image: kasmweb/chrome:1.15.0
+    ports:
+      - "6901:6901"
+    environment:
+      - VNC_PW=
+    extra_hosts:
+      - "cc.local:nginx"
+    shm_size: "2g"
+    restart: always
+    depends_on:
+      - nginx
+
+  # --- Reverse Proxy ---
+  nginx:
+    build: ./nginx
+    ports:
+      - "80:80"
+    restart: always
+    depends_on:
+      - capsule-info
+      - capsule-store
+      - dragon-radar-api
+      - gravity-viewer
+
+  # --- Internal Services (8080 range) ---
+  capsule-info:
+    image: ghcr.io/f5xc-salesdemos/capsule-info:latest
+    pull_policy: always
+    ports:
+      - "8080:8080"
+    restart: always
+    depends_on:
+      - scouter-app
+
+  scouter-app:
+    image: ghcr.io/f5xc-salesdemos/scouter-app:latest
+    pull_policy: always
+    ports:
+      - "8081:3002"
+    restart: always
+
+  # --- Origin Pool Targets (3000 range) ---
+  capsule-store:
+    image: ghcr.io/f5xc-salesdemos/capsule-store:latest
+    pull_policy: always
+    ports:
+      - "3000:3000"
+    restart: always
+
+  dragon-radar-api:
+    image: ghcr.io/f5xc-salesdemos/dragon-radar-api:latest
+    pull_policy: always
+    ports:
+      - "3001:3001"
+    restart: always
+
+  gravity-viewer:
+    image: ghcr.io/f5xc-salesdemos/gravity-viewer:latest
+    pull_policy: always
+    ports:
+      - "3002:3004"
+    restart: always
