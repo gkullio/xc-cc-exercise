@@ -20,6 +20,13 @@ app.use(session({
   cookie: { maxAge: 24 * 60 * 60 * 1000 }
 }));
 
+// Internal access detection middleware
+app.use((req, res, next) => {
+  res.locals.basePath = req.get('X-Base-Path') || '';
+  res.locals.internal = req.get('X-Internal-Request') === 'true';
+  next();
+});
+
 // View engine with express-ejs-layouts
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
