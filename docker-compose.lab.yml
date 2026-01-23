@@ -5,11 +5,14 @@ networks:
 services:
   # --- Browser Access ---
   chrome:
-    image: kasmweb/chrome:1.15.0
+    image: lscr.io/linuxserver/chromium:latest
     ports:
-      - "6901:6901"
+      - "3010:3000"
     environment:
-      - VNC_PW=lablab
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - CHROME_CLI=http://cc.local/info
     shm_size: "2g"
     restart: always
     networks:
