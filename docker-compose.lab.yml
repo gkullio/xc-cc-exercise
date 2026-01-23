@@ -22,6 +22,7 @@ services:
     build: ./nginx
     ports:
       - "80:80"
+      - "6080:6080"
     restart: always
     networks:
       lab:
