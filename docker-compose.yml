@@ -4,6 +4,8 @@ services:
     ports:
       - "8080:8080"
     restart: unless-stopped
+    depends_on:
+      - scouter-app
 
   capsule-store:
     build: ./capsule-store

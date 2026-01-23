@@ -1,6 +1,31 @@
 const axios = require('axios');
 
 /**
+ * Format axios errors into user-friendly messages
+ */
+function formatAxiosError(error) {
+  if (error.code === 'ECONNREFUSED') {
+    return `Connection refused - target is not reachable at ${error.address || 'host'}:${error.port || 'port'}`;
+  }
+  if (error.code === 'ENOTFOUND') {
+    return `DNS lookup failed - hostname not found`;
+  }
+  if (error.code === 'ETIMEDOUT' || error.code === 'ECONNABORTED') {
+    return `Connection timed out - target did not respond`;
+  }
+  if (error.code === 'EPROTO') {
+    return `SSL/TLS error - target may not support HTTPS (try http://)`;
+  }
+  if (error.code === 'CERT_HAS_EXPIRED' || error.code === 'UNABLE_TO_VERIFY_LEAF_SIGNATURE') {
+    return `SSL certificate error - ${error.code}`;
+  }
+  if (error.response) {
+    return `HTTP ${error.response.status}: ${error.response.statusText}`;
+  }
+  return error.message || 'Unknown error';
+}
+
+/**
  * Run WAF protection test
  */
 async function testWaf(baseUrl, sendUpdate) {
@@ -100,8 +125,9 @@ async function testWaf(baseUrl, sendUpdate) {
     }
 
   } catch (error) {
-    results.details.push({ phase: 'Error', result: error.message });
-    results.debug.error = error.message;
+    const errorMsg = formatAxiosError(error);
+    results.details.push({ phase: 'Error', result: errorMsg });
+    results.debug.error = errorMsg;
   }
 
   return results;
@@ -233,8 +259,9 @@ async function testBot(baseUrl, sendUpdate) {
     }
 
   } catch (error) {
-    results.details.push({ phase: 'Error', result: error.message });
-    results.debug.error = error.message;
+    const errorMsg = formatAxiosError(error);
+    results.details.push({ phase: 'Error', result: errorMsg });
+    results.debug.error = errorMsg;
   }
 
   return results;
@@ -331,8 +358,9 @@ async function testDdos(baseUrl, sendUpdate) {
     }
 
   } catch (error) {
-    results.details.push({ phase: 'Error', result: error.message });
-    results.debug.error = error.message;
+    const errorMsg = formatAxiosError(error);
+    results.details.push({ phase: 'Error', result: errorMsg });
+    results.debug.error = errorMsg;
   }
 
   return results;
@@ -430,8 +458,9 @@ async function testPci(baseUrl, sendUpdate) {
     }
 
   } catch (error) {
-    results.details.push({ phase: 'Error', result: error.message });
-    results.debug.error = error.message;
+    const errorMsg = formatAxiosError(error);
+    results.details.push({ phase: 'Error', result: errorMsg });
+    results.debug.error = errorMsg;
   }
 
   return results;

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scouter - Security Configuration Validator</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav-bar">
+        <a href="index.html" class="nav-logo">
+            <div class="logo-circle logo-circle-small">CC</div>
+        </a>
+        <div class="nav-links">
+            <a href="index.html">Challenge</a>
+            <a href="apps.html">Demo Apps</a>
+            <a href="scouter.html" class="active">Scouter</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero hero-small">
+        <div class="hero-content">
+            <h1>Scouter</h1>
+            <p class="tagline">Security Configuration Validator</p>
+            <div class="speed-line"></div>
+        </div>
+    </header>
+
+    <!-- Scouter Panels -->
+    <main class="scouter-panels">
+        <!-- Dragon Radar API Panel -->
+        <section class="scouter-panel" id="radar-panel">
+            <div class="scouter-panel-header">
+                <div class="scouter-panel-icon radar-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <circle cx="12" cy="12" r="6"/>
+                        <circle cx="12" cy="12" r="2"/>
+                        <line x1="12" y1="2" x2="12" y2="6"/>
+                        <line x1="12" y1="18" x2="12" y2="22"/>
+                        <line x1="2" y1="12" x2="6" y2="12"/>
+                        <line x1="18" y1="12" x2="22" y2="12"/>
+                    </svg>
+                </div>
+                <h2>Dragon Radar API</h2>
+            </div>
+
+            <div class="scouter-panel-body">
+                <div class="scouter-input-group">
+                    <label for="radar-fqdn">Target FQDN</label>
+                    <input type="text" id="radar-fqdn" placeholder="http://dragon-radar-api:3001">
+                </div>
+
+                <div class="scouter-test-options">
+                    <label class="scouter-test-option">
+                        <input type="checkbox" name="radar-test" value="rate-limiting" checked>
+                        <span class="scouter-checkbox"></span>
+                        <span>Rate Limiting</span>
+                    </label>
+                    <label class="scouter-test-option">
+                        <input type="checkbox" name="radar-test" value="caching" checked>
+                        <span class="scouter-checkbox"></span>
+                        <span>Caching Strategy</span>
+                    </label>
+                    <label class="scouter-test-option">
+                        <input type="checkbox" name="radar-test" value="performance" checked>
+                        <span class="scouter-checkbox"></span>
+                        <span>Global Performance</span>
+                    </label>
+                    <label class="scouter-test-option">
+                        <input type="checkbox" name="radar-test" value="security" checked>
+                        <span class="scouter-checkbox"></span>
+                        <span>API Security</span>
+                    </label>
+                </div>
+
+                <button class="scouter-scan-btn" id="radar-scan">
+                    <span class="btn-icon">&#9889;</span>
+                    SCAN POWER LEVEL
+                </button>
+
+                <div class="scouter-results" id="radar-results">
+                    <div class="scouter-results-placeholder">
+                        Select tests and enter FQDN to begin scanning
+                    </div>
+                </div>
+
+                <div class="scouter-power-display" id="radar-power-level" style="display: none;">
+                    <span class="power-label">POWER LEVEL</span>
+                    <span class="power-value">0</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Capsule Store Panel -->
+        <section class="scouter-panel" id="store-panel">
+            <div class="scouter-panel-header">
+                <div class="scouter-panel-icon store-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="9" cy="21" r="1"/>
+                        <circle cx="20" cy="21" r="1"/>
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                    </svg>
+                </div>
+                <h2>Capsule Store</h2>
+            </div>
+
+            <div class="scouter-panel-body">
+                <div class="scouter-input-group">
+                    <label for="store-fqdn">Target FQDN</label>
+                    <input type="text" id="store-fqdn" placeholder="http://capsule-store:3000">
+                </div>
+
+                <div class="scouter-test-options">
+                    <label class="scouter-test-option">
+                        <input type="checkbox" name="store-test" value="waf" checked>
+                        <span class="scouter-checkbox"></span>
+                        <span>WAF Protection</span>
+                    </label>
+                    <label class="scouter-test-option">
+                        <input type="checkbox" name="store-test" value="bot" checked>
+                        <span class="scouter-checkbox"></span>
+                        <span>Bot Protection</span>
+                    </label>
+                    <label class="scouter-test-option">
+                        <input type="checkbox" name="store-test" value="ddos" checked>
+                        <span class="scouter-checkbox"></span>
+                        <span>DDoS Mitigation</span>
+                    </label>
+                    <label class="scouter-test-option">
+                        <input type="checkbox" name="store-test" value="pci" checked>
+                        <span class="scouter-checkbox"></span>
+                        <span>PCI Compliance</span>
+                    </label>
+                </div>
+
+                <button class="scouter-scan-btn" id="store-scan">
+                    <span class="btn-icon">&#9889;</span>
+                    SCAN POWER LEVEL
+                </button>
+
+                <div class="scouter-results" id="store-results">
+                    <div class="scouter-results-placeholder">
+                        Select tests and enter FQDN to begin scanning
+                    </div>
+                </div>
+
+                <div class="scouter-power-display" id="store-power-level" style="display: none;">
+                    <span class="power-label">POWER LEVEL</span>
+                    <span class="power-value">0</span>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="logo logo-small">
+                <div class="logo-circle">CC</div>
+            </div>
+            <p>Capsule Corporation</p>
+            <div class="footer-badge">F5 Sales Engineering Challenge</div>
+        </div>
+    </footer>
+
+    <script src="scouter.js"></script>
+</body>
+</html>
