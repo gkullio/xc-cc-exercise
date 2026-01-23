@@ -1549,6 +1549,7 @@ p {
 .scouter-panel-body .scouter-scan-btn {
     grid-column: 1;
     grid-row: 3;
+    align-self: start;
 }
 
 .scouter-panel-body .scouter-results {
@@ -1669,8 +1670,6 @@ p {
     transition: all 0.2s;
     box-shadow: 0 4px 15px rgba(229, 62, 62, 0.4);
     margin-top: 0.5rem;
-    width: fit-content;
-    min-width: 200px;
 }
 
 .scouter-scan-btn:hover:not(:disabled) {
