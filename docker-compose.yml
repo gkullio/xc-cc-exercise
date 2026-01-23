@@ -30,3 +30,13 @@ services:
     ports:
       - "3002:3002"
     restart: unless-stopped
+
+  catalog:
+    build: ./catalog
+    ports:
+      - "8081:8081"
+    restart: unless-stopped
+    depends_on:
+      - capsule-store
+      - dragon-radar-api
+      - gravity-viewer
