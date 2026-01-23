@@ -16,6 +16,21 @@ app.use((req, res, next) => {
   next();
 });
 
+// Internal request detection - adds "internal" flag to responses
+app.use((req, res, next) => {
+  const isInternal = req.get('X-Internal-Request') === 'true';
+  if (isInternal) {
+    const originalJson = res.json.bind(res);
+    res.json = (data) => {
+      if (typeof data === 'object' && data !== null) {
+        data.internal = true;
+      }
+      return originalJson(data);
+    };
+  }
+  next();
+});
+
 // Health check
 app.get('/api/radar/health', (req, res) => {
   res.json({
