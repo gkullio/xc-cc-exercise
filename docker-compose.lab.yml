@@ -10,6 +10,7 @@ services:
       - "6901:6901"
     environment:
       - VNC_PW=password
+      - KASM_BASIC_AUTH_ENABLE=0
     shm_size: "2g"
     restart: always
     networks:
