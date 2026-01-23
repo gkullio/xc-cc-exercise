@@ -1,0 +1,6 @@
+services:
+  gravity-chamber:
+    build: .
+    ports:
+      - "3003:3003"
+    restart: unless-stopped
