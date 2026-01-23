@@ -1,0 +1,9 @@
+[
+  { "id": 1, "stars": 1, "lat": 35.6762, "long": 139.6503, "region": "Japan" },
+  { "id": 2, "stars": 2, "lat": -22.9068, "long": -43.1729, "region": "Brazil" },
+  { "id": 3, "stars": 3, "lat": 51.5074, "long": -0.1278, "region": "UK" },
+  { "id": 4, "stars": 4, "lat": 40.7128, "long": -74.0060, "region": "USA" },
+  { "id": 5, "stars": 5, "lat": -33.8688, "long": 151.2093, "region": "Australia" },
+  { "id": 6, "stars": 6, "lat": 55.7558, "long": 37.6173, "region": "Russia" },
+  { "id": 7, "stars": 7, "lat": 30.0444, "long": 31.2357, "region": "Egypt" }
+]

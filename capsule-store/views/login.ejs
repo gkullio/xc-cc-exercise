@@ -1,0 +1,25 @@
+<div class="auth-container">
+  <h1>Login</h1>
+
+  <form id="login-form" class="auth-form" action="/api/auth/login" method="POST">
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" required>
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Login</button>
+  </form>
+
+  <div class="demo-credentials">
+    <h3>Demo Accounts</h3>
+    <ul>
+      <li><strong>bulma</strong> / capsule123</li>
+      <li><strong>vegeta</strong> / prince123</li>
+      <li><strong>goku</strong> / kamehameha</li>
+      <li><strong>demo</strong> / demo</li>
+    </ul>
+  </div>
+</div>

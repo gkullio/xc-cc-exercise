@@ -1,0 +1,14 @@
+{
+  "name": "scouter-app",
+  "version": "1.0.0",
+  "description": "F5 XC Configuration Validator - Scanning Security Power Levels",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "ws": "^8.16.0",
+    "axios": "^1.6.5"
+  }
+}

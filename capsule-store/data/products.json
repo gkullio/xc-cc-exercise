@@ -1,0 +1,122 @@
+[
+  {
+    "id": 1,
+    "name": "Capsule #1: House",
+    "capsuleNumber": 1,
+    "description": "A fully-furnished 3-bedroom house. Just throw it on the ground and watch it expand! Perfect for adventurers who need a comfortable base camp.",
+    "price": 500000,
+    "category": "housing",
+    "image": "/images/capsule-house.jpg",
+    "inStock": true
+  },
+  {
+    "id": 2,
+    "name": "Capsule #2: Sedan",
+    "capsuleNumber": 2,
+    "description": "Dr. Brief's daily driver. Reliable hover-car with excellent fuel efficiency. Fits 5 passengers comfortably.",
+    "price": 50000,
+    "category": "vehicles",
+    "image": "/images/capsule-car.jpg",
+    "inStock": true
+  },
+  {
+    "id": 3,
+    "name": "Capsule #3: Motorcycle",
+    "capsuleNumber": 3,
+    "description": "High-speed hover-bike. Bulma's favorite for quick trips. Top speed: 500 km/h.",
+    "price": 25000,
+    "category": "vehicles",
+    "image": "/images/capsule-bike.jpg",
+    "inStock": true
+  },
+  {
+    "id": 4,
+    "name": "Capsule #4: Boat",
+    "capsuleNumber": 4,
+    "description": "Luxury yacht with sleeping quarters. Transforms in water automatically. Includes fishing gear.",
+    "price": 75000,
+    "category": "vehicles",
+    "image": "/images/capsule-boat.jpg",
+    "inStock": true
+  },
+  {
+    "id": 5,
+    "name": "Capsule #5: Jet",
+    "capsuleNumber": 5,
+    "description": "Mach 2.5 capable personal jet. Fits in your pocket, flies you anywhere. Autopilot included.",
+    "price": 2000000,
+    "category": "vehicles",
+    "image": "/images/capsule-jet.jpg",
+    "inStock": true
+  },
+  {
+    "id": 6,
+    "name": "Capsule #9: Refrigerator",
+    "capsuleNumber": 9,
+    "description": "Portable refrigerator perfect for picnics and training sessions. Keeps senzu beans fresh!",
+    "price": 5000,
+    "category": "appliances",
+    "image": "/images/capsule-fridge.jpg",
+    "inStock": true
+  },
+  {
+    "id": 7,
+    "name": "Capsule #15: Camper",
+    "capsuleNumber": 15,
+    "description": "Mobile home with kitchen, bathroom, and sleeping for 4. Essential for Dragon Ball hunting expeditions.",
+    "price": 150000,
+    "category": "housing",
+    "image": "/images/capsule-camper.jpg",
+    "inStock": true
+  },
+  {
+    "id": 8,
+    "name": "Capsule #21: Submarine",
+    "capsuleNumber": 21,
+    "description": "Deep-sea exploration vessel. Rated to 10,000 meters. Perfect for underwater Dragon Ball retrieval.",
+    "price": 500000,
+    "category": "vehicles",
+    "image": "/images/capsule-sub.jpg",
+    "inStock": true
+  },
+  {
+    "id": 9,
+    "name": "Capsule #30: Toolkit",
+    "capsuleNumber": 30,
+    "description": "Complete mechanic's toolkit. Everything you need to repair vehicles or build a time machine.",
+    "price": 1000,
+    "category": "tools",
+    "image": "/images/capsule-tools.jpg",
+    "inStock": true
+  },
+  {
+    "id": 10,
+    "name": "Capsule #35: Emergency Kit",
+    "capsuleNumber": 35,
+    "description": "Survival essentials: first aid, food rations, water, shelter. Recommended by Kami himself.",
+    "price": 2500,
+    "category": "tools",
+    "image": "/images/capsule-emergency.jpg",
+    "inStock": true
+  },
+  {
+    "id": 11,
+    "name": "Capsule #40: Gravity Chamber",
+    "capsuleNumber": 40,
+    "description": "As used by Vegeta for 400G training. Adjustable gravity from 1x to 500x Earth normal. Saiyan-grade construction.",
+    "price": 10000000,
+    "category": "training",
+    "image": "/images/capsule-gravity.jpg",
+    "inStock": true
+  },
+  {
+    "id": 12,
+    "name": "Capsule #50: Time Machine (Prototype)",
+    "capsuleNumber": 50,
+    "description": "PROTOTYPE - NOT FOR SALE TO GENERAL PUBLIC. Trunks-approved temporal displacement device. Warning: May create alternate timelines.",
+    "price": 999999999,
+    "category": "experimental",
+    "image": "/images/capsule-time.jpg",
+    "inStock": false
+  }
+]

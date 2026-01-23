@@ -1,0 +1,24 @@
+services:
+  capsule-info:
+    build: ./capsule-info
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+
+  capsule-store:
+    build: ./capsule-store
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+
+  dragon-radar-api:
+    build: ./dragon-radar-api
+    ports:
+      - "3001:3001"
+    restart: unless-stopped
+
+  scouter-app:
+    build: ./scouter-app
+    ports:
+      - "3002:3002"
+    restart: unless-stopped

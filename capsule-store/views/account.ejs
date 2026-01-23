@@ -1,0 +1,31 @@
+<h1>Welcome, <%= user.name %>!</h1>
+
+<div class="account-container">
+  <section class="account-section">
+    <h2>Order History</h2>
+
+    <% if (orders.length === 0) { %>
+      <p>No orders yet. <a href="/products">Start shopping!</a></p>
+    <% } else { %>
+      <div class="orders-list">
+        <% orders.forEach(order => { %>
+          <div class="order-card">
+            <div class="order-header">
+              <span class="order-id"><%= order.id %></span>
+              <span class="order-date"><%= order.date %></span>
+              <span class="order-status status-<%= order.status.toLowerCase() %>"><%= order.status %></span>
+            </div>
+            <div class="order-items">
+              <% order.items.forEach(item => { %>
+                <span class="order-item"><%= item %></span>
+              <% }) %>
+            </div>
+            <div class="order-total">
+              Total: <%= formatPrice(order.total) %>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    <% } %>
+  </section>
+</div>

@@ -1,0 +1,43 @@
+<section class="hero">
+  <h1>Welcome to Capsule Corp</h1>
+  <p>The world's most advanced portable technology. Houses, vehicles, and more - all in your pocket.</p>
+  <a href="/products" class="btn btn-primary">Shop All Capsules</a>
+</section>
+
+<section class="featured">
+  <h2>Featured Capsules</h2>
+  <div class="product-grid">
+    <% featured.forEach(product => { %>
+      <div class="product-card">
+        <div class="product-image">
+          <img src="<%= product.image %>" alt="<%= product.name %>" class="capsule-img">
+          <span class="capsule-number">#<%= product.capsuleNumber %></span>
+        </div>
+        <h3><%= product.name %></h3>
+        <p class="price"><%= formatPrice(product.price) %></p>
+        <a href="/products/<%= product.id %>" class="btn">View Details</a>
+      </div>
+    <% }) %>
+  </div>
+</section>
+
+<section class="about">
+  <h2>Why Capsule Corp?</h2>
+  <div class="features">
+    <div class="feature">
+      <span class="feature-icon">📦</span>
+      <h3>Instant Deployment</h3>
+      <p>Just click and throw - your capsule expands in seconds.</p>
+    </div>
+    <div class="feature">
+      <span class="feature-icon">🌍</span>
+      <h3>Global Support</h3>
+      <p>Service centers in every major city on Earth (and Namek).</p>
+    </div>
+    <div class="feature">
+      <span class="feature-icon">🔒</span>
+      <h3>Secure Storage</h3>
+      <p>Bio-locked capsules keep your belongings safe.</p>
+    </div>
+  </div>
+</section>

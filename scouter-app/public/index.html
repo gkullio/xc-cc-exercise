@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scouter App - F5 XC Configuration Validator</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <div class="scouter-icon">
+                    <div class="scouter-visor"></div>
+                </div>
+                <div class="logo-text">
+                    <h1>SCOUTER</h1>
+                    <span class="tagline">Scanning Security Power Levels...</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content - Two Panels -->
+    <main class="panels">
+        <!-- Dragon Radar API Panel -->
+        <section class="panel" id="radar-panel">
+            <div class="panel-header">
+                <div class="panel-icon radar-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <circle cx="12" cy="12" r="6"/>
+                        <circle cx="12" cy="12" r="2"/>
+                        <line x1="12" y1="2" x2="12" y2="6"/>
+                        <line x1="12" y1="18" x2="12" y2="22"/>
+                        <line x1="2" y1="12" x2="6" y2="12"/>
+                        <line x1="18" y1="12" x2="22" y2="12"/>
+                    </svg>
+                </div>
+                <h2>Dragon Radar API</h2>
+            </div>
+
+            <div class="panel-body">
+                <div class="input-group">
+                    <label for="radar-fqdn">Target FQDN</label>
+                    <input type="text" id="radar-fqdn" placeholder="radar.student01.f5demo.com">
+                </div>
+
+                <div class="test-options">
+                    <label class="test-option">
+                        <input type="checkbox" name="radar-test" value="rate-limiting" checked>
+                        <span class="checkbox-custom"></span>
+                        <span class="test-name">Rate Limiting</span>
+                    </label>
+                    <label class="test-option">
+                        <input type="checkbox" name="radar-test" value="caching" checked>
+                        <span class="checkbox-custom"></span>
+                        <span class="test-name">Caching Strategy</span>
+                    </label>
+                    <label class="test-option">
+                        <input type="checkbox" name="radar-test" value="performance" checked>
+                        <span class="checkbox-custom"></span>
+                        <span class="test-name">Global Performance</span>
+                    </label>
+                    <label class="test-option">
+                        <input type="checkbox" name="radar-test" value="security" checked>
+                        <span class="checkbox-custom"></span>
+                        <span class="test-name">API Security</span>
+                    </label>
+                </div>
+
+                <button class="scan-button" id="radar-scan" data-target="radar">
+                    <span class="button-icon">&#9889;</span>
+                    SCAN POWER LEVEL
+                </button>
+
+                <div class="results-area" id="radar-results">
+                    <div class="results-placeholder">
+                        Select tests and enter FQDN to begin scanning
+                    </div>
+                </div>
+
+                <div class="power-level-display" id="radar-power-level" style="display: none;">
+                    <span class="power-label">POWER LEVEL</span>
+                    <span class="power-value">0</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Capsule Store Panel -->
+        <section class="panel" id="store-panel">
+            <div class="panel-header">
+                <div class="panel-icon store-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="9" cy="21" r="1"/>
+                        <circle cx="20" cy="21" r="1"/>
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                    </svg>
+                </div>
+                <h2>Capsule Store</h2>
+            </div>
+
+            <div class="panel-body">
+                <div class="input-group">
+                    <label for="store-fqdn">Target FQDN</label>
+                    <input type="text" id="store-fqdn" placeholder="store.student01.f5demo.com">
+                </div>
+
+                <div class="test-options">
+                    <label class="test-option">
+                        <input type="checkbox" name="store-test" value="waf" checked>
+                        <span class="checkbox-custom"></span>
+                        <span class="test-name">WAF Protection</span>
+                    </label>
+                    <label class="test-option">
+                        <input type="checkbox" name="store-test" value="bot" checked>
+                        <span class="checkbox-custom"></span>
+                        <span class="test-name">Bot Protection</span>
+                    </label>
+                    <label class="test-option">
+                        <input type="checkbox" name="store-test" value="ddos" checked>
+                        <span class="checkbox-custom"></span>
+                        <span class="test-name">DDoS Mitigation</span>
+                    </label>
+                    <label class="test-option">
+                        <input type="checkbox" name="store-test" value="pci" checked>
+                        <span class="checkbox-custom"></span>
+                        <span class="test-name">PCI Compliance</span>
+                    </label>
+                </div>
+
+                <button class="scan-button" id="store-scan" data-target="store">
+                    <span class="button-icon">&#9889;</span>
+                    SCAN POWER LEVEL
+                </button>
+
+                <div class="results-area" id="store-results">
+                    <div class="results-placeholder">
+                        Select tests and enter FQDN to begin scanning
+                    </div>
+                </div>
+
+                <div class="power-level-display" id="store-power-level" style="display: none;">
+                    <span class="power-label">POWER LEVEL</span>
+                    <span class="power-value">0</span>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>Capsule Corporation Security Division</p>
+        <p class="footer-sub">"It's over 9000!" - Vegeta, probably</p>
+    </footer>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

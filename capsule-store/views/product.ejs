@@ -1,0 +1,28 @@
+<div class="product-detail">
+  <div class="product-image-large">
+    <img src="<%= product.image %>" alt="<%= product.name %>" class="capsule-img-large">
+  </div>
+
+  <div class="product-info">
+    <h1><%= product.name %></h1>
+    <p class="category">Category: <%= product.category %></p>
+    <p class="price-large"><%= formatPrice(product.price) %></p>
+    <p class="description"><%= product.description %></p>
+
+    <% if (product.inStock) { %>
+      <form class="add-to-cart-form" action="/api/cart" method="POST">
+        <input type="hidden" name="productId" value="<%= product.id %>">
+        <div class="quantity-selector">
+          <label for="quantity">Quantity:</label>
+          <input type="number" id="quantity" name="quantity" value="1" min="1" max="99">
+        </div>
+        <button type="submit" class="btn btn-primary btn-large">Add to Cart</button>
+      </form>
+    <% } else { %>
+      <p class="out-of-stock-message">This item is currently out of stock.</p>
+      <button class="btn btn-disabled" disabled>Out of Stock</button>
+    <% } %>
+
+    <a href="/products" class="back-link">&larr; Back to All Capsules</a>
+  </div>
+</div>

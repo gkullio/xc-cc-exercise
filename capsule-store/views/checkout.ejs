@@ -1,0 +1,50 @@
+<h1>Checkout</h1>
+
+<div class="checkout-container">
+  <div class="checkout-form">
+    <h2>Shipping Information</h2>
+    <form id="checkout-form" action="/api/checkout" method="POST">
+      <div class="form-group">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" name="name" value="<%= user ? user.name : '' %>" required>
+      </div>
+      <div class="form-group">
+        <label for="address">Delivery Address</label>
+        <input type="text" id="address" name="address" placeholder="Where should we throw the capsule?" required>
+      </div>
+      <div class="form-group">
+        <label for="city">City</label>
+        <input type="text" id="city" name="city" placeholder="West City, Satan City, etc." required>
+      </div>
+      <div class="form-group">
+        <label for="notes">Special Instructions</label>
+        <textarea id="notes" name="notes" placeholder="e.g., Watch out for Vegeta"></textarea>
+      </div>
+
+      <h2>Payment</h2>
+      <div class="form-group">
+        <label for="card">Card Number (Demo)</label>
+        <input type="text" id="card" name="card" value="4242-4242-4242-4242" readonly>
+        <small>This is a demo - no real payment processed</small>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-large">Place Order</button>
+    </form>
+  </div>
+
+  <div class="checkout-summary">
+    <h2>Order Summary</h2>
+    <div class="summary-items">
+      <% cart.items.forEach(item => { %>
+        <div class="summary-item">
+          <span><%= item.name %> x<%= item.quantity %></span>
+          <span><%= formatPrice(item.subtotal) %></span>
+        </div>
+      <% }) %>
+    </div>
+    <div class="summary-total">
+      <span>Total</span>
+      <span><%= formatPrice(cart.total) %></span>
+    </div>
+  </div>
+</div>
