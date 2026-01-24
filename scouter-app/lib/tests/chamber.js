@@ -22,6 +22,16 @@ function isPrivateIP(ip) {
   });
 }
 
+function isIPv4Address(str) {
+  const ipv4Regex = /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/;
+  const match = str.match(ipv4Regex);
+  if (!match) return false;
+  return match.slice(1).every(octet => {
+    const num = parseInt(octet, 10);
+    return num >= 0 && num <= 255;
+  });
+}
+
 /**
  * Test chamber availability via WebSocket
  */
@@ -141,36 +151,48 @@ async function testPrivateNetwork(baseUrl, sendUpdate) {
 
   results.debug.hostname = hostname;
 
-  sendUpdate({ phase: 'Resolving FQDN...' });
+  let ip;
 
-  try {
-    const addresses = await dns.resolve4(hostname);
-    results.debug.resolvedAddresses = addresses;
+  // Check if hostname is already an IP address
+  if (isIPv4Address(hostname)) {
+    ip = hostname;
+    results.details.push({ phase: 'Input', result: `Using IP address directly: ${ip}` });
+    results.powerLevel = 1000;
+  } else {
+    // Resolve FQDN to IP
+    sendUpdate({ phase: 'Resolving FQDN...' });
 
-    if (addresses.length === 0) {
-      results.details.push({ phase: 'DNS Lookup', result: 'No A records found' });
+    try {
+      const addresses = await dns.resolve4(hostname);
+      results.debug.resolvedAddresses = addresses;
+
+      if (addresses.length === 0) {
+        results.details.push({ phase: 'DNS Lookup', result: 'No A records found' });
+        return results;
+      }
+
+      ip = addresses[0];
+      results.details.push({ phase: 'DNS Lookup', result: `Resolved to ${ip}` });
+      results.powerLevel = 1000;
+    } catch (err) {
+      if (err.code === 'ENOTFOUND') {
+        results.details.push({ phase: 'DNS Lookup', result: `Hostname not found: ${hostname}` });
+      } else {
+        results.details.push({ phase: 'DNS Lookup', result: `Failed: ${err.message}` });
+      }
+      results.debug.error = err.message;
       return results;
     }
+  }
 
-    const ip = addresses[0];
-    results.details.push({ phase: 'DNS Lookup', result: `Resolved to ${ip}` });
-    results.powerLevel = 1000;
-
-    if (isPrivateIP(ip)) {
-      results.details.push({ phase: 'RFC1918 Check', result: `✓ ${ip} is a private address` });
-      results.powerLevel = 3000;
-      results.status = 'pass';
-    } else {
-      results.details.push({ phase: 'RFC1918 Check', result: `✗ ${ip} is a public address` });
-      results.details.push({ phase: 'Warning', result: 'Chamber should not be publicly accessible' });
-    }
-  } catch (err) {
-    if (err.code === 'ENOTFOUND') {
-      results.details.push({ phase: 'DNS Lookup', result: `Hostname not found: ${hostname}` });
-    } else {
-      results.details.push({ phase: 'DNS Lookup', result: `Failed: ${err.message}` });
-    }
-    results.debug.error = err.message;
+  // Check if IP is RFC1918 private
+  if (isPrivateIP(ip)) {
+    results.details.push({ phase: 'RFC1918 Check', result: `✓ ${ip} is a private address` });
+    results.powerLevel = 3000;
+    results.status = 'pass';
+  } else {
+    results.details.push({ phase: 'RFC1918 Check', result: `✗ ${ip} is a public address` });
+    results.details.push({ phase: 'Warning', result: 'Chamber should not be publicly accessible' });
   }
 
   return results;
