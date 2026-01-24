@@ -4,7 +4,7 @@
   <% products.forEach(product => { %>
     <div class="product-card <%= !product.inStock ? 'out-of-stock' : '' %>">
       <div class="product-image">
-        <img src="<%= product.image %>" alt="<%= product.name %>" class="capsule-img">
+        <img src="<%= basePath %><%= product.image %>" alt="<%= product.name %>" class="capsule-img">
         <span class="capsule-number">#<%= product.capsuleNumber %></span>
         <% if (!product.inStock) { %>
           <span class="stock-badge">Out of Stock</span>
@@ -13,7 +13,7 @@
       <h3><%= product.name %></h3>
       <p class="category"><%= product.category %></p>
       <p class="price"><%= formatPrice(product.price) %></p>
-      <a href="/products/<%= product.id %>" class="btn">View Details</a>
+      <a href="<%= basePath %>/products/<%= product.id %>" class="btn">View Details</a>
     </div>
   <% }) %>
 </div>

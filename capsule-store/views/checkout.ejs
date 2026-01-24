@@ -3,7 +3,7 @@
 <div class="checkout-container">
   <div class="checkout-form">
     <h2>Shipping Information</h2>
-    <form id="checkout-form" action="/api/checkout" method="POST">
+    <form id="checkout-form" action="<%= basePath %>/api/checkout" method="POST">
       <div class="form-group">
         <label for="name">Full Name</label>
         <input type="text" id="name" name="name" value="<%= user ? user.name : '' %>" required>

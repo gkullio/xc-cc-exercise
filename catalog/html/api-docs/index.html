@@ -200,6 +200,11 @@
             color: var(--color-text) !important;
             border-bottom: 1px solid var(--color-border) !important;
         }
+        .swagger-ui section.models .model-container {
+            background: rgba(0,0,0,0.2) !important;
+            border-radius: 4px;
+            margin: 0.5rem 0;
+        }
         .swagger-ui .model-box {
             background: rgba(0,0,0,0.2) !important;
         }
@@ -209,10 +214,56 @@
         .swagger-ui .model-title {
             color: var(--color-text) !important;
         }
+        .swagger-ui .model span {
+            color: var(--color-text) !important;
+        }
+        .swagger-ui .model .brace-open,
+        .swagger-ui .model .brace-close {
+            color: var(--color-text) !important;
+        }
+        .swagger-ui .model .property {
+            color: #7dd3fc !important;
+        }
         .swagger-ui .prop-type {
             color: var(--color-accent) !important;
         }
         .swagger-ui .prop-format {
+            color: var(--color-text-muted) !important;
+        }
+        .swagger-ui .model .property.primitive {
+            color: var(--color-text) !important;
+        }
+        /* Schema description text (the [...] brackets) */
+        .swagger-ui .model-toggle:after,
+        .swagger-ui .model-toggle {
+            color: var(--color-text-muted) !important;
+        }
+        .swagger-ui .model .renderedMarkdown p {
+            color: var(--color-text-muted) !important;
+        }
+        /* Inner model content */
+        .swagger-ui .inner-object {
+            color: var(--color-text) !important;
+        }
+        .swagger-ui table.model tbody tr td {
+            color: var(--color-text) !important;
+        }
+        .swagger-ui table.model tbody tr td:first-child {
+            color: #7dd3fc !important;
+        }
+        /* Constraint text like minimum/maximum */
+        .swagger-ui .model .constraints {
+            color: var(--color-text-muted) !important;
+        }
+        .swagger-ui .model-hint {
+            color: var(--color-text-muted) !important;
+        }
+        /* All spans inside model that might have been missed */
+        .swagger-ui section.models span,
+        .swagger-ui section.models td {
+            color: var(--color-text) !important;
+        }
+        .swagger-ui section.models .model-toggle::after {
             color: var(--color-text-muted) !important;
         }
 

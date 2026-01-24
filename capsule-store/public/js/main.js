@@ -1,5 +1,6 @@
 // Cart interactions
 document.addEventListener('DOMContentLoaded', function() {
+  const basePath = window.APP_BASE_PATH || '';
 
   // Add to cart form
   const addToCartForm = document.querySelector('.add-to-cart-form');
@@ -13,14 +14,14 @@ document.addEventListener('DOMContentLoaded', function() {
       };
 
       try {
-        const res = await fetch('/api/cart', {
+        const res = await fetch(`${basePath}/api/cart`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(data)
         });
 
         if (res.ok) {
-          window.location.href = '/cart';
+          window.location.href = `${basePath}/cart`;
         } else {
           const err = await res.json();
           alert(err.error || 'Failed to add to cart');
@@ -62,7 +63,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   async function updateQuantity(productId, quantity) {
     try {
-      const res = await fetch(`/api/cart/${productId}`, {
+      const res = await fetch(`${basePath}/api/cart/${productId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ quantity })
@@ -78,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   async function removeItem(productId) {
     try {
-      const res = await fetch(`/api/cart/${productId}`, {
+      const res = await fetch(`${basePath}/api/cart/${productId}`, {
         method: 'DELETE'
       });
 
@@ -98,7 +99,7 @@ document.addEventListener('DOMContentLoaded', function() {
       const formData = new FormData(this);
 
       try {
-        const res = await fetch('/api/auth/login', {
+        const res = await fetch(`${basePath}/api/auth/login`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -108,7 +109,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         if (res.ok) {
-          window.location.href = '/account';
+          window.location.href = `${basePath}/account`;
         } else {
           const err = await res.json();
           alert(err.error || 'Login failed');
@@ -126,7 +127,7 @@ document.addEventListener('DOMContentLoaded', function() {
       e.preventDefault();
 
       try {
-        const res = await fetch('/api/checkout', {
+        const res = await fetch(`${basePath}/api/checkout`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({})
@@ -136,7 +137,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (res.ok) {
           alert(`Order ${data.order.id} placed successfully!`);
-          window.location.href = '/';
+          window.location.href = `${basePath}/`;
         } else {
           alert(data.error || 'Checkout failed');
         }
