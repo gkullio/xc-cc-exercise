@@ -1,6 +1,6 @@
-// Gravity Chamber Viewer - WebSocket Client (Proxied)
+// Gravity Chamber Viewer - SSE Client
 
-let ws = null;
+let eventSource = null;
 let reconnectAttempts = 0;
 const MAX_RECONNECT = 3;
 let currentFqdn = '';
@@ -41,39 +41,24 @@ function handleConnect() {
 
 function connect(fqdn) {
   // Close existing connection
-  if (ws) {
-    ws.close();
+  if (eventSource) {
+    eventSource.close();
+    eventSource = null;
   }
 
   setStatus('connecting');
   connectBtn.disabled = true;
   connectBtn.textContent = 'CONNECTING...';
 
-  // Connect to our own server's WebSocket proxy
-  const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+  // Build SSE URL - use current page's base path
   const basePath = window.location.pathname.replace(/\/$/, '');
-  const wsUrl = `${protocol}//${window.location.host}${basePath}/ws/chamber`;
+  const sseUrl = `${basePath}/api/chamber/stream?fqdn=${encodeURIComponent(fqdn)}`;
 
-  console.log('Connecting to viewer proxy:', wsUrl);
+  console.log('Connecting to SSE:', sseUrl);
 
-  try {
-    ws = new WebSocket(wsUrl);
-  } catch (err) {
-    showError('Failed to connect to viewer: ' + err.message);
-    resetConnection();
-    return;
-  }
+  eventSource = new EventSource(sseUrl);
 
-  ws.onopen = () => {
-    console.log('Connected to viewer proxy, requesting chamber connection');
-    // Ask the server to connect to the gravity chamber
-    ws.send(JSON.stringify({
-      action: 'connect',
-      fqdn: fqdn
-    }));
-  };
-
-  ws.onmessage = (event) => {
+  eventSource.onmessage = (event) => {
     try {
       const data = JSON.parse(event.data);
 
@@ -86,52 +71,42 @@ function connect(fqdn) {
           break;
         case 'error':
           showError(data.message);
-          resetConnection();
+          disconnect();
           break;
         default:
-          // Legacy format - treat as state
           if (data.chamber) {
             updateDisplay(data);
           }
       }
     } catch (err) {
-      console.error('Failed to parse message:', err);
+      console.error('Failed to parse SSE message:', err);
     }
   };
 
-  ws.onerror = (err) => {
-    console.error('WebSocket error:', err);
-  };
+  eventSource.onerror = (err) => {
+    console.error('SSE error:', err);
 
-  ws.onclose = (event) => {
-    console.log('Connection closed:', event.code, event.reason);
-
-    if (connectionStatus.textContent === 'ESTABLISHING LINK...') {
-      showError('Failed to connect to viewer proxy');
-    } else if (connectionStatus.textContent === 'CONNECTED') {
-      // Unexpected disconnect, try reconnect
-      if (reconnectAttempts < MAX_RECONNECT) {
+    if (eventSource.readyState === EventSource.CLOSED) {
+      if (reconnectAttempts < MAX_RECONNECT && currentFqdn) {
         reconnectAttempts++;
+        console.log(`Reconnecting (${reconnectAttempts}/${MAX_RECONNECT})...`);
         setStatus('connecting');
         setTimeout(() => connect(currentFqdn), 2000);
-        return;
       } else {
-        showError('Connection lost. Max reconnection attempts reached.');
+        showError('Connection lost. Please try again.');
+        resetConnection();
       }
     }
-
-    resetConnection();
   };
 }
 
 function handleStatusMessage(data) {
   switch (data.status) {
     case 'connecting':
-      console.log('Server connecting to chamber:', data.target);
       setStatus('connecting');
       break;
     case 'connected':
-      console.log('Connected to gravity chamber via proxy');
+      console.log('Connected to gravity chamber via SSE');
       setStatus('connected');
       reconnectAttempts = 0;
       connectBtn.textContent = 'DISCONNECT';
@@ -140,29 +115,15 @@ function handleStatusMessage(data) {
       break;
     case 'disconnected':
       console.log('Disconnected from chamber:', data.reason);
-      if (connectionStatus.textContent === 'CONNECTED') {
-        // Unexpected disconnect
-        if (reconnectAttempts < MAX_RECONNECT && currentFqdn) {
-          reconnectAttempts++;
-          setStatus('connecting');
-          setTimeout(() => {
-            if (ws && ws.readyState === WebSocket.OPEN) {
-              ws.send(JSON.stringify({ action: 'connect', fqdn: currentFqdn }));
-            }
-          }, 2000);
-          return;
-        }
-      }
       resetConnection();
       break;
   }
 }
 
 function disconnect() {
-  if (ws) {
-    ws.send(JSON.stringify({ action: 'disconnect' }));
-    ws.close();
-    ws = null;
+  if (eventSource) {
+    eventSource.close();
+    eventSource = null;
   }
   resetConnection();
 }
@@ -188,16 +149,13 @@ function updateDisplay(state) {
 
   if (!chamber) return;
 
-  // Gravity value
   gravityValue.textContent = chamber.gravityLevel;
 
-  // Update gauge (max 500x gravity = full circle)
   const percentage = chamber.gravityLevel / 500;
-  const circumference = 534; // 2 * PI * 85
+  const circumference = 534;
   const offset = circumference - (percentage * circumference);
   gaugeFill.style.strokeDashoffset = offset;
 
-  // Color based on threshold proximity
   const thresholdRatio = chamber.gravityLevel / chamber.safetyThreshold;
   if (thresholdRatio >= 1 || chamber.status === 'emergency') {
     gravityValue.className = 'gravity-value danger';
@@ -210,18 +168,15 @@ function updateDisplay(state) {
     gaugeFill.className.baseVal = 'gauge-fill';
   }
 
-  // Chamber status
   chamberStatus.textContent = chamber.status.toUpperCase();
   chamberStatus.className = 'info-value status-value ' + chamber.status;
 
-  // Session info
   if (session) {
     sessionUser.textContent = session.user || '---';
     sessionTime.textContent = session.user ? formatTime(session.duration) : '--:--';
     sessionTarget.textContent = session.user ? formatTime(session.targetDuration) : '--:--';
   }
 
-  // Power and safety
   powerOutput.textContent = chamber.powerOutput + ' kW';
   safetyThreshold.textContent = chamber.safetyThreshold + 'x';
 }
