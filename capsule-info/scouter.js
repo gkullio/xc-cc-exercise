@@ -55,40 +55,33 @@ class ScouterApp {
   }
 
   connectAndScan(target, fqdn, tests) {
-    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    const wsUrl = `${protocol}//${window.location.host}/ws/scan`;
+    // Build SSE URL with query params
+    const params = new URLSearchParams({
+      target: target,
+      fqdn: fqdn,
+      tests: tests.join(',')
+    });
+    const sseUrl = `/ws/scan/stream?${params}`;  // Goes through nginx proxy to scouter-app
 
-    const ws = new WebSocket(wsUrl);
+    console.log(`Starting SSE scan for ${target}:`, sseUrl);
 
-    ws.onopen = () => {
-      console.log(`WebSocket connected for ${target} scan`);
-      ws.send(JSON.stringify({
-        action: 'scan',
-        target: target,
-        fqdn: fqdn,
-        tests: tests
-      }));
-    };
+    const eventSource = new EventSource(sseUrl);
 
-    ws.onmessage = (event) => {
+    eventSource.onmessage = (event) => {
       const data = JSON.parse(event.data);
       this.handleMessage(data);
 
-      // Close WebSocket after scan completes
+      // Close EventSource after scan completes
       if (data.type === 'scan-complete') {
-        ws.close();
+        eventSource.close();
       }
     };
 
-    ws.onerror = (error) => {
-      console.error('WebSocket error:', error);
+    eventSource.onerror = (error) => {
+      console.error('SSE error:', error);
       this.showError(target, 'Connection error - please try again');
       this.setScanning(target, false);
-    };
-
-    ws.onclose = () => {
-      console.log(`WebSocket closed for ${target}`);
-      this.setScanning(target, false);
+      eventSource.close();
     };
   }
 
