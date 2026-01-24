@@ -266,28 +266,45 @@
         .swagger-ui section.models .model-toggle::after {
             color: var(--color-text-muted) !important;
         }
-        /* Expand/collapse arrows */
+        /* Expand/collapse arrows - aggressive targeting */
+        .swagger-ui .model-toggle,
+        .swagger-ui .model-toggle.collapsed,
         .swagger-ui span.model-toggle,
-        .swagger-ui span.model-toggle.collapsed {
+        .swagger-ui span.model-toggle.collapsed,
+        .swagger-ui .model .model-toggle,
+        .swagger-ui section.models .model-toggle {
             color: #fff !important;
+            background: transparent !important;
         }
-        .swagger-ui .model-box .model-toggle {
+        .swagger-ui .model-toggle::before,
+        .swagger-ui .model-toggle.collapsed::before,
+        .swagger-ui .model-toggle::after,
+        .swagger-ui .model-toggle.collapsed::after {
             color: #fff !important;
+            border-color: #fff !important;
         }
-        .swagger-ui .models .model-box .model svg,
-        .swagger-ui section.models svg,
-        .swagger-ui .model svg {
+        /* If using border triangles */
+        .swagger-ui .model-toggle::after {
+            border-top-color: #fff !important;
+            border-bottom-color: #fff !important;
+            border-left-color: #fff !important;
+            border-right-color: #fff !important;
+        }
+        /* SVG arrows */
+        .swagger-ui .models svg,
+        .swagger-ui .model svg,
+        .swagger-ui .model-box svg,
+        .swagger-ui .model-toggle svg,
+        .swagger-ui section.models svg {
             fill: #fff !important;
         }
         .swagger-ui .expand-operation svg,
-        .swagger-ui .models-control svg {
+        .swagger-ui .models-control svg,
+        .swagger-ui .model-box-control svg {
             fill: #fff !important;
         }
         .swagger-ui button.model-box-control {
             background: transparent !important;
-        }
-        .swagger-ui .model-box-control svg {
-            fill: #fff !important;
         }
 
         /* Buttons */
