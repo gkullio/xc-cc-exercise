@@ -1,6 +1,4 @@
 const express = require('express');
-const { WebSocketServer } = require('ws');
-const http = require('http');
 const path = require('path');
 const { runTests } = require('./lib/runner');
 
@@ -19,39 +17,43 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// Create HTTP server and WebSocket server
-const server = http.createServer(app);
-const wss = new WebSocketServer({ server, path: '/ws/scan' });
+// SSE endpoint for scan streaming
+app.get('/api/scan/stream', async (req, res) => {
+  const { target, fqdn, tests } = req.query;
 
-wss.on('connection', (ws) => {
-  console.log('Scouter connection established');
+  if (!target || !fqdn || !tests) {
+    return res.status(400).json({ error: 'Missing required parameters: target, fqdn, tests' });
+  }
 
-  ws.on('message', async (message) => {
-    try {
-      const data = JSON.parse(message);
+  const testList = tests.split(',');
 
-      if (data.action === 'scan') {
-        console.log(`Starting scan for ${data.target}: ${data.fqdn}`);
-        await runTests(ws, data.target, data.fqdn, data.tests);
-      }
-    } catch (error) {
-      console.error('Error processing message:', error);
-      ws.send(JSON.stringify({
-        type: 'error',
-        message: 'Failed to process request: ' + error.message
-      }));
-    }
-  });
+  // Set SSE headers
+  res.setHeader('Content-Type', 'text/event-stream');
+  res.setHeader('Cache-Control', 'no-cache');
+  res.setHeader('Connection', 'keep-alive');
+  res.setHeader('X-Accel-Buffering', 'no');
+  res.flushHeaders();
 
-  ws.on('close', () => {
-    console.log('Scouter connection closed');
-  });
+  console.log(`SSE scan starting for ${target}: ${fqdn}`);
+
+  // Create a send function that writes to SSE
+  const sendEvent = (data) => {
+    res.write(`data: ${JSON.stringify(data)}\n\n`);
+  };
+
+  try {
+    await runTests(sendEvent, target, fqdn, testList);
+  } catch (error) {
+    sendEvent({ type: 'error', message: error.message });
+  }
+
+  res.end();
 });
 
-server.listen(PORT, () => {
+app.listen(PORT, () => {
   console.log(`Scouter App operational on port ${PORT}`);
   console.log('Endpoints:');
   console.log('  GET  /api/health');
-  console.log('  WS   /ws/scan');
+  console.log('  GET  /api/scan/stream (SSE)');
   console.log('  GET  / (static files)');
 });

@@ -9,16 +9,16 @@ const testSuites = {
 };
 
 /**
- * Run tests for a target and stream results via WebSocket
+ * Run tests for a target and stream results via callback
  */
-async function runTests(ws, target, fqdn, tests) {
+async function runTests(sendEvent, target, fqdn, tests) {
   const suite = testSuites[target];
   if (!suite) {
-    ws.send(JSON.stringify({
+    sendEvent({
       type: 'error',
       target: target,
       message: `Unknown target: ${target}`
-    }));
+    });
     return;
   }
 
@@ -34,25 +34,24 @@ async function runTests(ws, target, fqdn, tests) {
   for (const testName of tests) {
     const testFn = suite[testName];
     if (!testFn) {
-      ws.send(JSON.stringify({
+      sendEvent({
         type: 'error',
         target: target,
         message: `Unknown test: ${testName}`
-      }));
+      });
       continue;
     }
 
     // Send test start
-    ws.send(JSON.stringify({
+    sendEvent({
       type: 'test-start',
       target: target,
       test: testName,
       name: getTestDisplayName(testName)
-    }));
+    });
 
     // Run test with update callback
     const sendUpdate = (update) => {
-      // Could be used for progress updates during test
       console.log(`[${target}/${testName}] ${update.phase}`);
     };
 
@@ -62,12 +61,12 @@ async function runTests(ws, target, fqdn, tests) {
       totalPowerLevel += result.powerLevel;
       maxPossible += getMaxPowerLevel(testName);
 
-      ws.send(JSON.stringify({
+      sendEvent({
         type: 'test-result',
         ...result
-      }));
+      });
     } catch (error) {
-      ws.send(JSON.stringify({
+      sendEvent({
         type: 'test-result',
         target: target,
         test: testName,
@@ -76,18 +75,18 @@ async function runTests(ws, target, fqdn, tests) {
         powerLevel: 0,
         details: [{ phase: 'Error', result: error.message }],
         debug: { error: error.stack }
-      }));
+      });
     }
   }
 
   // Send scan complete
-  ws.send(JSON.stringify({
+  sendEvent({
     type: 'scan-complete',
     target: target,
     totalPowerLevel: totalPowerLevel,
     maxPossible: maxPossible,
     message: totalPowerLevel > 9000 ? "IT'S OVER 9000!" : null
-  }));
+  });
 }
 
 function getTestDisplayName(testName) {
