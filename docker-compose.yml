@@ -1,42 +1,64 @@
+networks:
+  lab:
+    driver: bridge
+
 services:
+  # --- Entry Points (8080 range) ---
   capsule-info:
-    build: ./capsule-info
+    image: ghcr.io/f5xc-salesdemos/capsule-info:latest
+    pull_policy: always
     ports:
       - "8080:8080"
-    restart: unless-stopped
+    restart: always
+    networks:
+      - lab
     depends_on:
       - scouter-app
-
-  capsule-store:
-    build: ./capsule-store
-    ports:
-      - "3000:3000"
-    restart: unless-stopped
-
-  dragon-radar-api:
-    build: ./dragon-radar-api
-    ports:
-      - "3001:3001"
-    restart: unless-stopped
-
-  scouter-app:
-    build: ./scouter-app
-    ports:
-      - "4000:4000"
-    restart: unless-stopped
-
-  gravity-viewer:
-    build: ./gravity-viewer
-    ports:
-      - "3002:3002"
-    restart: unless-stopped
 
   catalog:
     build: ./catalog
     ports:
       - "8081:8081"
-    restart: unless-stopped
+    restart: always
+    networks:
+      - lab
     depends_on:
       - capsule-store
       - dragon-radar-api
       - gravity-viewer
+
+  # --- App Ports (3000 range) ---
+  capsule-store:
+    image: ghcr.io/f5xc-salesdemos/capsule-store:latest
+    pull_policy: always
+    ports:
+      - "3000:3000"
+    restart: always
+    networks:
+      - lab
+
+  dragon-radar-api:
+    image: ghcr.io/f5xc-salesdemos/dragon-radar-api:latest
+    pull_policy: always
+    ports:
+      - "3001:3001"
+    restart: always
+    networks:
+      - lab
+
+  gravity-viewer:
+    image: ghcr.io/f5xc-salesdemos/gravity-viewer:latest
+    pull_policy: always
+    ports:
+      - "3002:3002"
+    restart: always
+    networks:
+      - lab
+
+  # --- Internal Services ---
+  scouter-app:
+    image: ghcr.io/f5xc-salesdemos/scouter-app:latest
+    pull_policy: always
+    restart: always
+    networks:
+      - lab
