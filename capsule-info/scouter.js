@@ -28,7 +28,9 @@ class ScouterApp {
 
   getFqdn(target) {
     const input = document.getElementById(`${target}-fqdn`);
-    return input.value.trim();
+    const value = input.value.trim();
+    // Fall back to placeholder hint if empty
+    return value || input.placeholder;
   }
 
   startScan(target) {
@@ -182,6 +184,9 @@ class ScouterApp {
     } else {
       powerDisplay.classList.remove('over-9000');
     }
+
+    // Re-enable the scan button
+    this.setScanning(data.target, false);
   }
 
   animatePowerLevel(element, targetValue, target) {
