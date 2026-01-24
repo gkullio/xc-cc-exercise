@@ -29,10 +29,10 @@ jobs:
             context: ./dragon-radar-api
           - image: scouter-app
             context: ./scouter-app
-          - image: gravity-chamber
-            context: ./gravity-chamber
           - image: gravity-viewer
             context: ./gravity-viewer
+          - image: catalog
+            context: ./catalog
 
     steps:
       - name: Checkout repository
