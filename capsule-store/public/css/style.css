@@ -125,7 +125,7 @@ body::before {
   z-index: 0;
 }
 
-/* Scan Line Effect */
+/* Scan Line Effect - Behind content */
 body::after {
   content: '';
   position: fixed;
@@ -134,10 +134,10 @@ body::after {
   width: 100%;
   height: 4px;
   background: linear-gradient(90deg, transparent, var(--ki-orange), var(--ki-yellow), var(--ki-orange), transparent);
-  opacity: 0.3;
+  opacity: 0.15;
   animation: scanLine 8s linear infinite;
   pointer-events: none;
-  z-index: 1000;
+  z-index: 0;
 }
 
 .container {

@@ -1,14 +1,44 @@
-.internal-banner {
-    background: linear-gradient(90deg, #dc2626, #b91c1c);
-    color: white;
-    text-align: center;
-    padding: 8px 20px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
+/* Internal Access Banner - Matching Catalog Style */
+@keyframes warningPulse {
+  0%, 100% { background-color: rgba(220, 38, 38, 0.95); }
+  50% { background-color: rgba(185, 28, 28, 0.95); }
 }
+
+.internal-banner {
+  background: linear-gradient(90deg, #dc2626, #b91c1c);
+  color: white;
+  padding: 12px 20px;
+  text-align: center;
+  font-family: 'Orbitron', monospace;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  text-transform: uppercase;
+  position: relative;
+  z-index: 100;
+  animation: warningPulse 2s ease-in-out infinite;
+  box-shadow: 0 4px 20px rgba(220, 38, 38, 0.4);
+}
+
+.internal-banner::before,
+.internal-banner::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100px;
+  background: repeating-linear-gradient(
+    -45deg,
+    transparent 0px,
+    transparent 10px,
+    rgba(0, 0, 0, 0.1) 10px,
+    rgba(0, 0, 0, 0.1) 20px
+  );
+}
+
+.internal-banner::before { left: 0; }
+.internal-banner::after { right: 0; }
