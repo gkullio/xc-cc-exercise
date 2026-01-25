@@ -8,13 +8,17 @@ const swaggerSpec = YAML.load(path.join(__dirname, 'openapi.yaml'));
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+// Serve static files (for custom CSS)
+app.use('/static', express.static(path.join(__dirname, 'public')));
+
 // Serve OpenAPI spec
 app.use('/openapi.yaml', express.static(path.join(__dirname, 'openapi.yaml')));
 
-// Swagger UI docs
+// Swagger UI docs with Saiyan Tech theme
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
-  customCss: '.swagger-ui .topbar { display: none }',
-  customSiteTitle: 'Dragon Radar API Docs'
+  customCssUrl: '/static/css/swagger-theme.css',
+  customSiteTitle: 'Dragon Radar API - Capsule Corp',
+  customfavIcon: '/static/favicon.ico'
 }));
 
 // Add rate limit headers to all responses (for F5 demo)

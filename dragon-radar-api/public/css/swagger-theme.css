@@ -1,0 +1,662 @@
+/* ========================================
+   DRAGON RADAR API - Saiyan Tech Swagger Theme
+   ======================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800&family=Exo+2:wght@300;400;500;600&family=Share+Tech+Mono&display=swap');
+
+:root {
+  --ki-orange: #ff6b35;
+  --ki-yellow: #ffd93d;
+  --ki-gold: #f4a020;
+  --ki-blue: #00d4ff;
+  --ki-green: #22c55e;
+  --ki-purple: #a855f7;
+  --bg-void: #050810;
+  --bg-dark: #0a0f1a;
+  --bg-panel: #111827;
+  --bg-card: #1e293b;
+  --text-bright: #ffffff;
+  --text-primary: #e2e8f0;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --border: rgba(255, 107, 53, 0.2);
+  --glow-orange: rgba(255, 107, 53, 0.4);
+  --glow-blue: rgba(0, 212, 255, 0.4);
+}
+
+/* Base Overrides */
+body {
+  background: var(--bg-void) !important;
+  background-image:
+    linear-gradient(90deg, rgba(255, 107, 53, 0.02) 1px, transparent 1px),
+    linear-gradient(rgba(255, 107, 53, 0.02) 1px, transparent 1px) !important;
+  background-size: 60px 60px !important;
+}
+
+.swagger-ui {
+  font-family: 'Exo 2', sans-serif !important;
+  color: var(--text-primary) !important;
+}
+
+/* Hide default topbar (already done, but reinforce) */
+.swagger-ui .topbar {
+  display: none !important;
+}
+
+/* Custom Header */
+.swagger-ui .info {
+  margin: 30px 0 !important;
+  padding: 40px !important;
+  background: linear-gradient(135deg, var(--bg-panel), var(--bg-dark)) !important;
+  border: 2px solid var(--border) !important;
+  clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px)) !important;
+  position: relative !important;
+}
+
+.swagger-ui .info::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, transparent 50%, rgba(255, 107, 53, 0.1) 50%);
+}
+
+.swagger-ui .info .title {
+  font-family: 'Orbitron', monospace !important;
+  font-size: 2.5rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 3px !important;
+  background: linear-gradient(135deg, var(--text-bright), var(--ki-orange), var(--ki-yellow)) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+}
+
+.swagger-ui .info .title small {
+  font-family: 'Share Tech Mono', monospace !important;
+  background: var(--ki-gold) !important;
+  color: var(--bg-dark) !important;
+  padding: 4px 12px !important;
+  border-radius: 0 !important;
+  clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%) !important;
+  font-size: 0.7rem !important;
+  letter-spacing: 1px !important;
+  margin-left: 15px !important;
+  vertical-align: middle !important;
+}
+
+.swagger-ui .info .description {
+  font-family: 'Exo 2', sans-serif !important;
+  color: var(--text-secondary) !important;
+  font-size: 1.1rem !important;
+  line-height: 1.7 !important;
+}
+
+.swagger-ui .info .description p {
+  color: var(--text-secondary) !important;
+}
+
+.swagger-ui .info a {
+  color: var(--ki-blue) !important;
+  text-decoration: none !important;
+  transition: all 0.2s ease !important;
+}
+
+.swagger-ui .info a:hover {
+  color: var(--ki-yellow) !important;
+  text-shadow: 0 0 10px var(--glow-orange) !important;
+}
+
+/* Scheme Container */
+.swagger-ui .scheme-container {
+  background: var(--bg-panel) !important;
+  border: 2px solid var(--border) !important;
+  padding: 20px !important;
+  box-shadow: none !important;
+  margin-bottom: 30px !important;
+}
+
+.swagger-ui .schemes-title {
+  font-family: 'Orbitron', monospace !important;
+  color: var(--ki-orange) !important;
+  letter-spacing: 2px !important;
+}
+
+/* Section Headers */
+.swagger-ui .opblock-tag {
+  font-family: 'Orbitron', monospace !important;
+  color: var(--text-bright) !important;
+  border-bottom: 2px solid var(--border) !important;
+  padding: 15px 0 !important;
+  font-size: 1.3rem !important;
+  letter-spacing: 2px !important;
+}
+
+.swagger-ui .opblock-tag:hover {
+  background: rgba(255, 107, 53, 0.05) !important;
+}
+
+.swagger-ui .opblock-tag small {
+  font-family: 'Exo 2', sans-serif !important;
+  color: var(--text-muted) !important;
+  font-size: 0.85rem !important;
+}
+
+/* Operation Blocks */
+.swagger-ui .opblock {
+  background: var(--bg-card) !important;
+  border: 2px solid var(--border) !important;
+  border-radius: 0 !important;
+  margin-bottom: 15px !important;
+  box-shadow: none !important;
+  clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px)) !important;
+  overflow: visible !important;
+}
+
+.swagger-ui .opblock:hover {
+  border-color: var(--ki-orange) !important;
+  box-shadow: 0 0 20px var(--glow-orange) !important;
+}
+
+/* GET Method - Blue Energy */
+.swagger-ui .opblock-get {
+  border-color: var(--ki-blue) !important;
+  background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), var(--bg-card)) !important;
+}
+
+.swagger-ui .opblock-get .opblock-summary-method {
+  background: linear-gradient(135deg, var(--ki-blue), #0891b2) !important;
+  font-family: 'Orbitron', monospace !important;
+  font-weight: 700 !important;
+  letter-spacing: 2px !important;
+  border-radius: 0 !important;
+  padding: 8px 20px !important;
+  box-shadow: 0 0 15px var(--glow-blue) !important;
+  clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%) !important;
+}
+
+.swagger-ui .opblock-get:hover {
+  border-color: var(--ki-blue) !important;
+  box-shadow: 0 0 25px var(--glow-blue) !important;
+}
+
+.swagger-ui .opblock-get .opblock-summary {
+  border-color: transparent !important;
+}
+
+/* POST Method - Green Energy */
+.swagger-ui .opblock-post {
+  border-color: var(--ki-green) !important;
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), var(--bg-card)) !important;
+}
+
+.swagger-ui .opblock-post .opblock-summary-method {
+  background: linear-gradient(135deg, var(--ki-green), #16a34a) !important;
+  font-family: 'Orbitron', monospace !important;
+  font-weight: 700 !important;
+  letter-spacing: 2px !important;
+  border-radius: 0 !important;
+  padding: 8px 20px !important;
+  box-shadow: 0 0 15px rgba(34, 197, 94, 0.4) !important;
+  clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%) !important;
+}
+
+/* PUT Method - Orange Energy */
+.swagger-ui .opblock-put {
+  border-color: var(--ki-orange) !important;
+  background: linear-gradient(135deg, rgba(255, 107, 53, 0.1), var(--bg-card)) !important;
+}
+
+.swagger-ui .opblock-put .opblock-summary-method {
+  background: linear-gradient(135deg, var(--ki-orange), var(--ki-gold)) !important;
+  font-family: 'Orbitron', monospace !important;
+  font-weight: 700 !important;
+  letter-spacing: 2px !important;
+  border-radius: 0 !important;
+  padding: 8px 20px !important;
+  box-shadow: 0 0 15px var(--glow-orange) !important;
+  clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%) !important;
+}
+
+/* DELETE Method - Red */
+.swagger-ui .opblock-delete {
+  border-color: #ef4444 !important;
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), var(--bg-card)) !important;
+}
+
+.swagger-ui .opblock-delete .opblock-summary-method {
+  background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+  font-family: 'Orbitron', monospace !important;
+  font-weight: 700 !important;
+  letter-spacing: 2px !important;
+  border-radius: 0 !important;
+  padding: 8px 20px !important;
+  box-shadow: 0 0 15px rgba(239, 68, 68, 0.4) !important;
+  clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%) !important;
+}
+
+/* Operation Summary */
+.swagger-ui .opblock-summary {
+  padding: 12px 20px !important;
+}
+
+.swagger-ui .opblock-summary-path {
+  font-family: 'Share Tech Mono', monospace !important;
+  color: var(--text-bright) !important;
+  font-size: 1rem !important;
+}
+
+.swagger-ui .opblock-summary-path__deprecated {
+  color: var(--text-muted) !important;
+}
+
+.swagger-ui .opblock-summary-description {
+  font-family: 'Exo 2', sans-serif !important;
+  color: var(--text-secondary) !important;
+  font-size: 0.9rem !important;
+}
+
+/* Expanded Operation Body */
+.swagger-ui .opblock-body {
+  background: var(--bg-dark) !important;
+  padding: 20px !important;
+}
+
+.swagger-ui .opblock-section-header {
+  background: var(--bg-panel) !important;
+  border: 1px solid var(--border) !important;
+  padding: 12px 15px !important;
+  box-shadow: none !important;
+}
+
+.swagger-ui .opblock-section-header h4 {
+  font-family: 'Orbitron', monospace !important;
+  color: var(--ki-yellow) !important;
+  font-size: 0.85rem !important;
+  letter-spacing: 2px !important;
+  text-transform: uppercase !important;
+}
+
+.swagger-ui .opblock-section-header label {
+  color: var(--text-secondary) !important;
+}
+
+/* Parameters */
+.swagger-ui .parameters-col_name {
+  font-family: 'Share Tech Mono', monospace !important;
+  color: var(--ki-blue) !important;
+}
+
+.swagger-ui .parameters-col_description {
+  font-family: 'Exo 2', sans-serif !important;
+  color: var(--text-secondary) !important;
+}
+
+.swagger-ui .parameter__name {
+  font-family: 'Share Tech Mono', monospace !important;
+  color: var(--text-bright) !important;
+}
+
+.swagger-ui .parameter__name.required::after {
+  color: var(--ki-orange) !important;
+}
+
+.swagger-ui .parameter__type {
+  font-family: 'Share Tech Mono', monospace !important;
+  color: var(--text-muted) !important;
+}
+
+.swagger-ui .parameter__in {
+  font-family: 'Share Tech Mono', monospace !important;
+  color: var(--ki-gold) !important;
+  background: rgba(244, 160, 32, 0.15) !important;
+  padding: 2px 8px !important;
+  font-size: 0.75rem !important;
+}
+
+/* Tables */
+.swagger-ui table {
+  background: transparent !important;
+}
+
+.swagger-ui table thead tr th {
+  font-family: 'Orbitron', monospace !important;
+  color: var(--text-secondary) !important;
+  background: var(--bg-panel) !important;
+  border-bottom: 2px solid var(--border) !important;
+  font-size: 0.8rem !important;
+  letter-spacing: 1px !important;
+  text-transform: uppercase !important;
+  padding: 12px 15px !important;
+}
+
+.swagger-ui table tbody tr td {
+  color: var(--text-primary) !important;
+  border-bottom: 1px solid var(--border) !important;
+  padding: 12px 15px !important;
+}
+
+/* Input Fields */
+.swagger-ui input[type=text],
+.swagger-ui input[type=password],
+.swagger-ui input[type=search],
+.swagger-ui input[type=email],
+.swagger-ui input[type=file],
+.swagger-ui textarea {
+  background: var(--bg-dark) !important;
+  border: 2px solid var(--border) !important;
+  color: var(--ki-green) !important;
+  font-family: 'Share Tech Mono', monospace !important;
+  padding: 10px 15px !important;
+  border-radius: 0 !important;
+  transition: all 0.2s ease !important;
+}
+
+.swagger-ui input:focus,
+.swagger-ui textarea:focus {
+  border-color: var(--ki-orange) !important;
+  box-shadow: 0 0 15px var(--glow-orange) !important;
+  outline: none !important;
+}
+
+.swagger-ui input::placeholder,
+.swagger-ui textarea::placeholder {
+  color: var(--text-muted) !important;
+}
+
+/* Select Dropdowns */
+.swagger-ui select {
+  background: var(--bg-dark) !important;
+  border: 2px solid var(--border) !important;
+  color: var(--text-primary) !important;
+  font-family: 'Share Tech Mono', monospace !important;
+  padding: 8px 12px !important;
+  border-radius: 0 !important;
+}
+
+.swagger-ui select:focus {
+  border-color: var(--ki-orange) !important;
+  box-shadow: 0 0 15px var(--glow-orange) !important;
+  outline: none !important;
+}
+
+/* Buttons */
+.swagger-ui .btn {
+  font-family: 'Orbitron', monospace !important;
+  font-weight: 600 !important;
+  letter-spacing: 1px !important;
+  text-transform: uppercase !important;
+  border-radius: 0 !important;
+  padding: 10px 20px !important;
+  transition: all 0.2s ease !important;
+  clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%) !important;
+}
+
+.swagger-ui .btn.execute {
+  background: linear-gradient(135deg, var(--ki-orange), var(--ki-gold)) !important;
+  color: var(--bg-dark) !important;
+  border: none !important;
+  box-shadow: 0 4px 15px var(--glow-orange) !important;
+}
+
+.swagger-ui .btn.execute:hover {
+  box-shadow: 0 6px 25px var(--glow-orange) !important;
+  transform: translateY(-2px) !important;
+}
+
+.swagger-ui .btn.cancel {
+  background: var(--bg-panel) !important;
+  color: var(--text-secondary) !important;
+  border: 2px solid var(--border) !important;
+}
+
+.swagger-ui .btn.cancel:hover {
+  border-color: var(--ki-orange) !important;
+  color: var(--ki-orange) !important;
+}
+
+.swagger-ui .btn.authorize {
+  background: linear-gradient(135deg, var(--ki-green), #16a34a) !important;
+  color: white !important;
+  border: none !important;
+  box-shadow: 0 4px 15px rgba(34, 197, 94, 0.4) !important;
+}
+
+/* Try it out button */
+.swagger-ui .try-out__btn {
+  background: transparent !important;
+  border: 2px solid var(--ki-blue) !important;
+  color: var(--ki-blue) !important;
+  font-family: 'Orbitron', monospace !important;
+  font-size: 0.8rem !important;
+  letter-spacing: 1px !important;
+}
+
+.swagger-ui .try-out__btn:hover {
+  background: var(--ki-blue) !important;
+  color: var(--bg-dark) !important;
+  box-shadow: 0 0 15px var(--glow-blue) !important;
+}
+
+/* Response Section */
+.swagger-ui .responses-wrapper {
+  background: var(--bg-panel) !important;
+  padding: 15px !important;
+  border: 1px solid var(--border) !important;
+}
+
+.swagger-ui .responses-inner {
+  padding: 0 !important;
+}
+
+.swagger-ui .response {
+  background: transparent !important;
+}
+
+.swagger-ui .response-col_status {
+  font-family: 'Share Tech Mono', monospace !important;
+  font-size: 1.1rem !important;
+}
+
+.swagger-ui .response-col_status .response-undocumented {
+  color: var(--text-muted) !important;
+}
+
+/* Response Code Colors */
+.swagger-ui table tbody tr td.response-col_status {
+  color: var(--ki-green) !important;
+}
+
+.swagger-ui tr[data-code^="4"] td.response-col_status,
+.swagger-ui tr[data-code^="5"] td.response-col_status {
+  color: #ef4444 !important;
+}
+
+/* Code/Pre blocks */
+.swagger-ui .highlight-code,
+.swagger-ui pre {
+  background: var(--bg-void) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 0 !important;
+  padding: 15px !important;
+}
+
+.swagger-ui pre.microlight {
+  font-family: 'Share Tech Mono', monospace !important;
+  color: var(--text-primary) !important;
+  font-size: 0.9rem !important;
+  line-height: 1.6 !important;
+}
+
+/* JSON syntax highlighting */
+.swagger-ui .microlight .string {
+  color: var(--ki-green) !important;
+}
+
+.swagger-ui .microlight .number {
+  color: var(--ki-gold) !important;
+}
+
+.swagger-ui .microlight .boolean {
+  color: var(--ki-purple) !important;
+}
+
+.swagger-ui .microlight .null {
+  color: var(--text-muted) !important;
+}
+
+/* Model/Schema Section */
+.swagger-ui .model-box {
+  background: var(--bg-panel) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 0 !important;
+}
+
+.swagger-ui .model {
+  font-family: 'Share Tech Mono', monospace !important;
+  color: var(--text-primary) !important;
+}
+
+.swagger-ui .model-title {
+  font-family: 'Orbitron', monospace !important;
+  color: var(--ki-yellow) !important;
+}
+
+.swagger-ui .model .property {
+  color: var(--ki-blue) !important;
+}
+
+.swagger-ui .model .property.primitive {
+  color: var(--ki-green) !important;
+}
+
+/* Expand/Collapse Icons */
+.swagger-ui .expand-operation svg,
+.swagger-ui .expand-methods svg {
+  fill: var(--text-secondary) !important;
+}
+
+.swagger-ui .expand-operation:hover svg,
+.swagger-ui .expand-methods:hover svg {
+  fill: var(--ki-orange) !important;
+}
+
+/* Copy button */
+.swagger-ui .copy-to-clipboard {
+  background: var(--bg-panel) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 0 !important;
+}
+
+.swagger-ui .copy-to-clipboard button {
+  background: transparent !important;
+}
+
+/* Download button */
+.swagger-ui .download-contents {
+  background: var(--ki-blue) !important;
+  color: var(--bg-dark) !important;
+  font-family: 'Orbitron', monospace !important;
+  border-radius: 0 !important;
+}
+
+/* Server dropdown */
+.swagger-ui .servers > label {
+  font-family: 'Orbitron', monospace !important;
+  color: var(--text-secondary) !important;
+  letter-spacing: 1px !important;
+}
+
+.swagger-ui .servers-title {
+  font-family: 'Orbitron', monospace !important;
+  color: var(--ki-orange) !important;
+}
+
+/* Loading/Spinner */
+.swagger-ui .loading-container {
+  background: var(--bg-panel) !important;
+}
+
+.swagger-ui .loading-container .loading::before {
+  border-color: var(--ki-orange) !important;
+  border-top-color: transparent !important;
+}
+
+/* Scrollbar styling */
+.swagger-ui ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.swagger-ui ::-webkit-scrollbar-track {
+  background: var(--bg-dark);
+}
+
+.swagger-ui ::-webkit-scrollbar-thumb {
+  background: var(--ki-orange);
+  border-radius: 0;
+}
+
+.swagger-ui ::-webkit-scrollbar-thumb:hover {
+  background: var(--ki-yellow);
+}
+
+/* Wrapper padding */
+.swagger-ui .wrapper {
+  padding: 20px 40px !important;
+  max-width: 1400px !important;
+}
+
+/* Authorization modal */
+.swagger-ui .dialog-ux .modal-ux {
+  background: var(--bg-panel) !important;
+  border: 2px solid var(--ki-orange) !important;
+  border-radius: 0 !important;
+  box-shadow: 0 0 50px var(--glow-orange) !important;
+}
+
+.swagger-ui .dialog-ux .modal-ux-header {
+  background: var(--bg-dark) !important;
+  border-bottom: 2px solid var(--border) !important;
+}
+
+.swagger-ui .dialog-ux .modal-ux-header h3 {
+  font-family: 'Orbitron', monospace !important;
+  color: var(--ki-orange) !important;
+}
+
+.swagger-ui .dialog-ux .modal-ux-content {
+  background: var(--bg-panel) !important;
+}
+
+/* Backdrop */
+.swagger-ui .dialog-ux .backdrop-ux {
+  background: rgba(5, 8, 16, 0.9) !important;
+}
+
+/* Arrow icons */
+.swagger-ui .arrow {
+  fill: var(--text-secondary) !important;
+}
+
+/* No margin on first/last elements */
+.swagger-ui .information-container {
+  margin: 0 !important;
+}
+
+/* Links in descriptions */
+.swagger-ui .renderedMarkdown a {
+  color: var(--ki-blue) !important;
+}
+
+.swagger-ui .renderedMarkdown a:hover {
+  color: var(--ki-yellow) !important;
+}
+
+/* Parameter examples */
+.swagger-ui .parameter__example {
+  color: var(--text-muted) !important;
+  font-family: 'Share Tech Mono', monospace !important;
+}
