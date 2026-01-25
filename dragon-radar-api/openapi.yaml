@@ -11,9 +11,6 @@ info:
     url: /api/openapi.yaml
 servers:
   - url: /api/radar
-    description: Via gateway (production)
-  - url: /radar
-    description: Direct container access
 paths:
   /health:
     get:
