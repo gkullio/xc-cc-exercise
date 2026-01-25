@@ -74,15 +74,18 @@ body {
   background-clip: text !important;
 }
 
-.swagger-ui .info .title small {
-  font-family: 'Share Tech Mono', monospace !important;
+.swagger-ui .info .title small,
+.swagger-ui .info .title small pre {
+  font-family: 'Orbitron', monospace !important;
+  font-weight: 600 !important;
   background: var(--ki-gold) !important;
   color: var(--bg-dark) !important;
-  padding: 4px 12px !important;
+  -webkit-text-fill-color: var(--bg-dark) !important;
+  padding: 6px 14px !important;
   border-radius: 0 !important;
   clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%) !important;
-  font-size: 0.7rem !important;
-  letter-spacing: 1px !important;
+  font-size: 0.75rem !important;
+  letter-spacing: 2px !important;
   margin-left: 15px !important;
   vertical-align: middle !important;
 }

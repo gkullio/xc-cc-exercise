@@ -6,6 +6,7 @@ COPY apps.html /usr/share/nginx/html/
 COPY scouter.html /usr/share/nginx/html/
 COPY scouter.js /usr/share/nginx/html/
 COPY styles.css /usr/share/nginx/html/
+COPY favicon.svg /usr/share/nginx/html/
 COPY images/ /usr/share/nginx/html/images/
 
 # Custom nginx config with SSE proxy to scouter backend

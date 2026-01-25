@@ -487,6 +487,12 @@ p {
     pointer-events: none;
 }
 
+/* Stagger the shine effect across cards */
+.metric-card:nth-child(1)::before { animation-delay: 0s; }
+.metric-card:nth-child(2)::before { animation-delay: 0.8s; }
+.metric-card:nth-child(3)::before { animation-delay: 1.6s; }
+.metric-card:nth-child(4)::before { animation-delay: 2.4s; }
+
 /* Corner accent */
 .metric-card::after {
     content: '';

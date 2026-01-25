@@ -15,10 +15,11 @@ app.use('/static', express.static(path.join(__dirname, 'public')));
 app.use('/openapi.yaml', express.static(path.join(__dirname, 'openapi.yaml')));
 
 // Swagger UI docs with Saiyan Tech theme
+// Use relative path so it works both directly and behind gateway proxy
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
-  customCssUrl: '/static/css/swagger-theme.css',
+  customCssUrl: '../static/css/swagger-theme.css',
   customSiteTitle: 'Dragon Radar API - Capsule Corp',
-  customfavIcon: '/static/favicon.ico'
+  customfavIcon: '../static/favicon.svg'
 }));
 
 // Add rate limit headers to all responses (for F5 demo)
