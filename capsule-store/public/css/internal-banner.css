@@ -1,16 +1,14 @@
 .internal-banner {
-    background: #f59e0b;
-    color: #000;
+    background: linear-gradient(90deg, #dc2626, #b91c1c);
+    color: white;
     text-align: center;
-    padding: 8px 1rem;
-    font-family: system-ui, -apple-system, sans-serif;
-    font-weight: 700;
-    font-size: 0.875rem;
+    padding: 8px 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 2px;
     text-transform: uppercase;
-    letter-spacing: 0.15em;
-    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
+    gap: 10px;
 }

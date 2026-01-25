@@ -1,15 +1,16 @@
-/* Capsule Corp Theme - Orange/Blue */
+/* Capsule Corp Store - Dark Sci-Fi Theme */
 :root {
-  --primary: #ff6b00;
-  --primary-dark: #e05a00;
-  --secondary: #0066cc;
-  --background: #f5f5f5;
-  --surface: #ffffff;
-  --text: #333333;
-  --text-light: #666666;
-  --border: #dddddd;
-  --success: #28a745;
-  --error: #dc3545;
+  --bg-dark: #0a0f1a;
+  --bg-panel: #111827;
+  --bg-card: rgba(17, 24, 39, 0.8);
+  --accent: #00d4ff;
+  --accent-glow: rgba(0, 212, 255, 0.3);
+  --secondary: #ff6b35;
+  --text: #ffffff;
+  --text-dim: #9ca3af;
+  --border: #1f2937;
+  --success: #10b981;
+  --error: #ef4444;
 }
 
 * {
@@ -19,10 +20,13 @@
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-  background: var(--background);
+  font-family: 'Inter', sans-serif;
+  background: var(--bg-dark);
   color: var(--text);
   line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .container {
@@ -33,9 +37,9 @@ body {
 
 /* Header */
 .header {
-  background: var(--secondary);
-  color: white;
+  background: linear-gradient(180deg, var(--bg-panel) 0%, var(--bg-dark) 100%);
   padding: 15px 0;
+  border-bottom: 1px solid var(--border);
 }
 
 .header .container {
@@ -48,64 +52,77 @@ body {
   display: flex;
   align-items: center;
   text-decoration: none;
-  color: white;
+  color: var(--text);
   font-weight: bold;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
+  gap: 12px;
 }
 
 .logo-img {
   width: 40px;
   height: 40px;
   object-fit: contain;
-  margin-right: 10px;
+  filter: drop-shadow(0 0 10px var(--accent-glow));
+}
+
+.logo-text {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 600;
+  letter-spacing: 2px;
 }
 
 .nav {
   display: flex;
-  gap: 20px;
+  gap: 24px;
+  align-items: center;
 }
 
 .nav a {
-  color: white;
+  color: var(--text-dim);
   text-decoration: none;
+  font-size: 0.95rem;
+  transition: color 0.3s;
 }
 
 .nav a:hover {
-  color: var(--primary);
+  color: var(--accent);
 }
 
 .cart-badge {
-  background: var(--primary);
-  border-radius: 50%;
+  background: var(--secondary);
+  border-radius: 10px;
   padding: 2px 8px;
   font-size: 0.8rem;
+  color: white;
 }
 
 /* Main */
 .main {
-  min-height: calc(100vh - 200px);
+  flex: 1;
   padding: 40px 0;
 }
 
 /* Buttons */
 .btn {
   display: inline-block;
-  padding: 10px 20px;
+  padding: 12px 24px;
   border: none;
-  border-radius: 5px;
+  border-radius: 6px;
   cursor: pointer;
   text-decoration: none;
   font-size: 1rem;
-  transition: background 0.3s;
+  font-weight: 500;
+  transition: all 0.3s;
 }
 
 .btn-primary {
-  background: var(--primary);
-  color: white;
+  background: var(--accent);
+  color: var(--bg-dark);
 }
 
 .btn-primary:hover {
-  background: var(--primary-dark);
+  background: #00b8e6;
+  box-shadow: 0 0 20px var(--accent-glow);
 }
 
 .btn-large {
@@ -115,7 +132,7 @@ body {
 
 .btn-disabled {
   background: var(--border);
-  color: var(--text-light);
+  color: var(--text-dim);
   cursor: not-allowed;
 }
 
@@ -123,58 +140,67 @@ body {
 .hero {
   text-align: center;
   padding: 60px 20px;
-  background: linear-gradient(135deg, var(--secondary), var(--primary));
-  color: white;
-  border-radius: 10px;
+  background: linear-gradient(135deg, var(--bg-panel), var(--bg-card));
+  border: 1px solid var(--border);
+  border-radius: 12px;
   margin-bottom: 40px;
 }
 
 .hero h1 {
+  font-family: 'Rajdhani', sans-serif;
   font-size: 2.5rem;
+  font-weight: 700;
   margin-bottom: 15px;
+  background: linear-gradient(90deg, var(--text), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .hero p {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   margin-bottom: 25px;
-  opacity: 0.9;
+  color: var(--text-dim);
 }
 
 /* Product Grid */
 .product-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 25px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
   margin-top: 20px;
 }
 
 .product-card {
-  background: var(--surface);
-  border-radius: 10px;
-  padding: 20px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
   text-align: center;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-  transition: transform 0.3s;
+  transition: all 0.3s;
 }
 
 .product-card:hover {
-  transform: translateY(-5px);
+  border-color: var(--accent);
+  box-shadow: 0 0 30px var(--accent-glow);
+  transform: translateY(-4px);
 }
 
 .product-card.out-of-stock {
-  opacity: 0.7;
+  opacity: 0.6;
 }
 
 .capsule-icon {
   width: 100px;
   height: 100px;
-  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  background: linear-gradient(135deg, var(--secondary), #e05500);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0 auto 15px;
   color: white;
+  font-family: 'Rajdhani', sans-serif;
   font-weight: bold;
   font-size: 1.5rem;
 }
@@ -184,6 +210,7 @@ body {
   height: 120px;
   margin: 0 auto 15px;
   display: block;
+  border-radius: 8px;
 }
 
 .product-image {
@@ -197,12 +224,13 @@ body {
   bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
-  background: rgba(0, 0, 0, 0.75);
-  color: white;
+  background: rgba(0, 0, 0, 0.8);
+  color: var(--accent);
   padding: 4px 12px;
   border-radius: 15px;
   font-weight: bold;
   font-size: 0.85rem;
+  border: 1px solid var(--accent);
 }
 
 .stock-badge {
@@ -218,19 +246,24 @@ body {
 }
 
 .product-card h3 {
-  margin-bottom: 10px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--text);
 }
 
 .category {
-  color: var(--text-light);
-  font-size: 0.9rem;
+  color: var(--text-dim);
+  font-size: 0.85rem;
 }
 
 .price {
-  color: var(--primary);
+  color: var(--accent);
+  font-family: 'Rajdhani', sans-serif;
   font-weight: bold;
-  font-size: 1.2rem;
-  margin: 10px 0;
+  font-size: 1.4rem;
+  margin: 12px 0;
 }
 
 /* Product Detail */
@@ -238,21 +271,23 @@ body {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 40px;
-  background: var(--surface);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
   padding: 40px;
-  border-radius: 10px;
+  border-radius: 12px;
 }
 
 .capsule-icon-large {
   width: 200px;
   height: 200px;
-  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  background: linear-gradient(135deg, var(--secondary), #e05500);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0 auto;
   color: white;
+  font-family: 'Rajdhani', sans-serif;
   font-weight: bold;
   font-size: 3rem;
 }
@@ -262,18 +297,21 @@ body {
   height: 200px;
   margin: 0 auto;
   display: block;
+  border-radius: 12px;
 }
 
 .price-large {
-  color: var(--primary);
+  color: var(--accent);
+  font-family: 'Rajdhani', sans-serif;
   font-size: 2rem;
   font-weight: bold;
   margin: 20px 0;
 }
 
 .description {
-  color: var(--text-light);
+  color: var(--text-dim);
   margin-bottom: 20px;
+  line-height: 1.8;
 }
 
 .quantity-selector {
@@ -283,12 +321,19 @@ body {
   margin-bottom: 20px;
 }
 
+.quantity-selector label {
+  color: var(--text-dim);
+}
+
 .quantity-selector input {
-  width: 60px;
-  padding: 8px;
+  width: 70px;
+  padding: 10px;
+  background: var(--bg-dark);
   border: 1px solid var(--border);
-  border-radius: 5px;
+  border-radius: 6px;
   text-align: center;
+  color: var(--text);
+  font-size: 1rem;
 }
 
 /* Cart */
@@ -302,14 +347,20 @@ body {
   display: flex;
   align-items: center;
   gap: 20px;
-  background: var(--surface);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
   padding: 20px;
-  border-radius: 10px;
+  border-radius: 12px;
   margin-bottom: 15px;
 }
 
 .cart-item-details {
   flex: 1;
+}
+
+.cart-item-details h3 {
+  font-family: 'Rajdhani', sans-serif;
+  color: var(--text);
 }
 
 .cart-item-quantity {
@@ -319,20 +370,28 @@ body {
 }
 
 .qty-btn {
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
   border: 1px solid var(--border);
-  background: var(--surface);
-  border-radius: 5px;
+  background: var(--bg-dark);
+  color: var(--text);
+  border-radius: 6px;
   cursor: pointer;
+  transition: all 0.3s;
+}
+
+.qty-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
 .remove-btn {
   background: none;
   border: none;
   font-size: 1.5rem;
-  color: var(--text-light);
+  color: var(--text-dim);
   cursor: pointer;
+  transition: color 0.3s;
 }
 
 .remove-btn:hover {
@@ -340,17 +399,25 @@ body {
 }
 
 .cart-summary {
-  background: var(--surface);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
   padding: 25px;
-  border-radius: 10px;
+  border-radius: 12px;
   height: fit-content;
+}
+
+.cart-summary h2 {
+  font-family: 'Rajdhani', sans-serif;
+  margin-bottom: 20px;
+  color: var(--text);
 }
 
 .summary-row {
   display: flex;
   justify-content: space-between;
-  padding: 10px 0;
+  padding: 12px 0;
   border-bottom: 1px solid var(--border);
+  color: var(--text-dim);
 }
 
 .summary-row.total {
@@ -358,11 +425,13 @@ body {
   font-size: 1.2rem;
   border-bottom: none;
   margin-top: 10px;
+  color: var(--accent);
 }
 
 .empty-cart {
   text-align: center;
   padding: 60px;
+  color: var(--text-dim);
 }
 
 /* Forms */
@@ -372,21 +441,31 @@ body {
 
 .form-group label {
   display: block;
-  margin-bottom: 5px;
+  margin-bottom: 8px;
   font-weight: 500;
+  color: var(--text-dim);
 }
 
 .form-group input,
 .form-group textarea {
   width: 100%;
   padding: 12px;
+  background: var(--bg-dark);
   border: 1px solid var(--border);
-  border-radius: 5px;
+  border-radius: 6px;
   font-size: 1rem;
+  color: var(--text);
+  transition: border-color 0.3s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--accent);
 }
 
 .form-group small {
-  color: var(--text-light);
+  color: var(--text-dim);
   font-size: 0.85rem;
 }
 
@@ -397,25 +476,40 @@ body {
 }
 
 .auth-form {
-  background: var(--surface);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
   padding: 30px;
-  border-radius: 10px;
+  border-radius: 12px;
   margin-bottom: 20px;
 }
 
+.auth-form h1 {
+  font-family: 'Rajdhani', sans-serif;
+  text-align: center;
+  margin-bottom: 24px;
+}
+
 .demo-credentials {
-  background: var(--surface);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
   padding: 20px;
-  border-radius: 10px;
+  border-radius: 12px;
 }
 
 .demo-credentials h3 {
-  margin-bottom: 10px;
+  font-family: 'Rajdhani', sans-serif;
+  margin-bottom: 12px;
+  color: var(--text);
+}
+
+.demo-credentials ul {
+  list-style: none;
 }
 
 .demo-credentials li {
-  margin-left: 20px;
-  color: var(--text-light);
+  color: var(--text-dim);
+  padding: 4px 0;
+  font-family: monospace;
 }
 
 /* Features */
@@ -428,7 +522,10 @@ body {
 
 .feature {
   text-align: center;
-  padding: 20px;
+  padding: 24px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
 }
 
 .feature-icon {
@@ -436,11 +533,22 @@ body {
   margin-bottom: 15px;
 }
 
+.feature h3 {
+  font-family: 'Rajdhani', sans-serif;
+  margin-bottom: 8px;
+}
+
+.feature p {
+  color: var(--text-dim);
+  font-size: 0.95rem;
+}
+
 /* Orders */
 .order-card {
-  background: var(--surface);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
   padding: 20px;
-  border-radius: 10px;
+  border-radius: 12px;
   margin-bottom: 15px;
 }
 
@@ -453,34 +561,41 @@ body {
 }
 
 .order-status {
-  padding: 3px 10px;
+  padding: 4px 12px;
   border-radius: 15px;
   font-size: 0.85rem;
+  font-weight: 500;
 }
 
 .status-delivered {
-  background: #d4edda;
-  color: #155724;
+  background: rgba(16, 185, 129, 0.2);
+  color: var(--success);
+  border: 1px solid var(--success);
 }
 
 .status-processing {
-  background: #fff3cd;
-  color: #856404;
+  background: rgba(255, 107, 53, 0.2);
+  color: var(--secondary);
+  border: 1px solid var(--secondary);
 }
 
 /* Footer */
 .footer {
-  background: var(--secondary);
-  color: white;
+  background: var(--bg-panel);
   text-align: center;
   padding: 30px;
-  margin-top: 40px;
+  border-top: 1px solid var(--border);
+  margin-top: auto;
+}
+
+.footer p {
+  color: var(--text-dim);
 }
 
 .footer-tagline {
   opacity: 0.7;
   font-size: 0.9rem;
-  margin-top: 5px;
+  margin-top: 8px;
 }
 
 /* Error Page */
@@ -490,14 +605,20 @@ body {
 }
 
 .error-page h1 {
+  font-family: 'Rajdhani', sans-serif;
   font-size: 3rem;
-  color: var(--primary);
+  color: var(--accent);
 }
 
 .error-message {
   font-size: 1.2rem;
-  color: var(--text-light);
+  color: var(--text-dim);
   margin: 20px 0;
+}
+
+/* Section Titles */
+h1, h2 {
+  font-family: 'Rajdhani', sans-serif;
 }
 
 /* Responsive */
@@ -517,5 +638,9 @@ body {
   .header .container {
     flex-direction: column;
     gap: 15px;
+  }
+
+  .hero h1 {
+    font-size: 1.8rem;
   }
 }
