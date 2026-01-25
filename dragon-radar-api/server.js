@@ -1,12 +1,21 @@
 const express = require('express');
 const path = require('path');
 const { getAllBalls, getBallById, getNearestBall } = require('./lib/radar');
+const swaggerUi = require('swagger-ui-express');
+const YAML = require('yamljs');
+const swaggerSpec = YAML.load(path.join(__dirname, 'openapi.yaml'));
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
 // Serve OpenAPI spec
 app.use('/openapi.yaml', express.static(path.join(__dirname, 'openapi.yaml')));
+
+// Swagger UI docs
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+  customCss: '.swagger-ui .topbar { display: none }',
+  customSiteTitle: 'Dragon Radar API Docs'
+}));
 
 // Add rate limit headers to all responses (for F5 demo)
 app.use((req, res, next) => {
