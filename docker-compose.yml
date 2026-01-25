@@ -19,8 +19,7 @@ services:
 
   # --- Entry Points (8080 range) ---
   capsule-info:
-    image: ghcr.io/f5xc-salesdemos/capsule-info:latest
-    pull_policy: always
+    build: ./capsule-info
     ports:
       - "8080:8080"
     restart: always
@@ -37,8 +36,7 @@ services:
       - lab
 
   capsule-store:
-    image: ghcr.io/f5xc-salesdemos/capsule-store:latest
-    pull_policy: always
+    build: ./capsule-store
     ports:
       - "3000:3000"
     restart: always
@@ -54,8 +52,7 @@ services:
       - lab
 
   gravity-viewer:
-    image: ghcr.io/f5xc-salesdemos/gravity-viewer:latest
-    pull_policy: always
+    build: ./gravity-viewer
     ports:
       - "3002:3002"
     restart: always
@@ -64,8 +61,7 @@ services:
 
   # --- Internal Services ---
   scouter-app:
-    image: ghcr.io/f5xc-salesdemos/scouter-app:latest
-    pull_policy: always
+    build: ./scouter-app
     restart: always
     networks:
       - lab

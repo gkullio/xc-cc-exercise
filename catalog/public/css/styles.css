@@ -60,19 +60,16 @@ body {
   margin-bottom: 20px;
 }
 
-.logo-circle {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--accent), #0891b2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Rajdhani', sans-serif;
-  font-weight: 700;
-  font-size: 1.5rem;
-  color: white;
-  box-shadow: 0 0 30px var(--accent-glow);
+.logo-img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 20px var(--accent-glow));
+}
+
+.logo-img.logo-sm {
+  width: 50px;
+  height: 50px;
 }
 
 .header h1 {
