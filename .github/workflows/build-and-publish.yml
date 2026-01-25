@@ -33,6 +33,8 @@ jobs:
             context: ./gravity-viewer
           - image: catalog
             context: ./catalog
+          - image: gateway
+            context: ./gateway
 
     steps:
       - name: Checkout repository
