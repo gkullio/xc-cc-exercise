@@ -8,10 +8,12 @@ info:
   version: 1.0.0
   contact:
     name: Capsule Corporation
-    url: https://capsulecorp.example.com
+    url: /api/openapi.yaml
 servers:
   - url: /api/radar
-    description: Dragon Radar API base path
+    description: Via gateway (production)
+  - url: /radar
+    description: Direct container access
 paths:
   /health:
     get:

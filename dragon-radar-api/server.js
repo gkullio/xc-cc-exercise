@@ -41,7 +41,7 @@ app.use((req, res, next) => {
 });
 
 // Health check
-app.get('/api/radar/health', (req, res) => {
+app.get('/radar/health', (req, res) => {
   res.json({
     status: 'operational',
     message: 'Shenron awaits',
@@ -50,7 +50,7 @@ app.get('/api/radar/health', (req, res) => {
 });
 
 // Scan all balls
-app.get('/api/radar/scan', (req, res) => {
+app.get('/radar/scan', (req, res) => {
   const startTime = Date.now();
   const balls = getAllBalls();
   const processingTime = Date.now() - startTime;
@@ -65,7 +65,7 @@ app.get('/api/radar/scan', (req, res) => {
 });
 
 // Get single ball
-app.get('/api/radar/ball/:id', (req, res) => {
+app.get('/radar/ball/:id', (req, res) => {
   const id = parseInt(req.params.id, 10);
 
   if (isNaN(id) || id < 1 || id > 7) {
@@ -92,7 +92,7 @@ app.get('/api/radar/ball/:id', (req, res) => {
 });
 
 // Get nearest ball from coordinates
-app.get('/api/radar/distance', (req, res) => {
+app.get('/radar/distance', (req, res) => {
   const lat = parseFloat(req.query.lat);
   const long = parseFloat(req.query.long);
 
@@ -123,7 +123,7 @@ app.get('/api/radar/distance', (req, res) => {
 
 // Shadow endpoint - NOT documented in OpenAPI spec
 // Used to test OAS enforcement in F5 XC
-app.get('/api/radar/shadow-protocol', (req, res) => {
+app.get('/radar/shadow-protocol', (req, res) => {
   res.json({
     timestamp: new Date().toISOString(),
     source: 'West City Research Lab - CLASSIFIED',
@@ -136,15 +136,15 @@ app.get('/api/radar/shadow-protocol', (req, res) => {
 app.use((req, res) => {
   res.status(404).json({
     error: 'Endpoint not found',
-    message: 'This radar frequency is not monitored. Try /api/radar/scan'
+    message: 'This radar frequency is not monitored. Try /radar/scan'
   });
 });
 
 app.listen(PORT, () => {
   console.log(`Dragon Radar API operational on port ${PORT}`);
   console.log('Endpoints:');
-  console.log('  GET /api/radar/health');
-  console.log('  GET /api/radar/scan');
-  console.log('  GET /api/radar/ball/:id');
-  console.log('  GET /api/radar/distance?lat=X&long=Y');
+  console.log('  GET /radar/health');
+  console.log('  GET /radar/scan');
+  console.log('  GET /radar/ball/:id');
+  console.log('  GET /radar/distance?lat=X&long=Y');
 });
