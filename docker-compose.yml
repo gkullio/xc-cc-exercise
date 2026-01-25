@@ -3,6 +3,20 @@ networks:
     driver: bridge
 
 services:
+  # --- Gateway (8081) ---
+  gateway:
+    build: ./gateway
+    ports:
+      - "8081:8081"
+    restart: always
+    networks:
+      - lab
+    depends_on:
+      - catalog
+      - capsule-store
+      - dragon-radar-api
+      - gravity-viewer
+
   # --- Entry Points (8080 range) ---
   capsule-info:
     image: ghcr.io/f5xc-salesdemos/capsule-info:latest
@@ -15,20 +29,13 @@ services:
     depends_on:
       - scouter-app
 
+  # --- App Ports (3000 range) ---
   catalog:
-    image: ghcr.io/f5xc-salesdemos/catalog:latest
-    pull_policy: always
-    ports:
-      - "8081:8081"
+    build: ./catalog
     restart: always
     networks:
       - lab
-    depends_on:
-      - capsule-store
-      - dragon-radar-api
-      - gravity-viewer
 
-  # --- App Ports (3000 range) ---
   capsule-store:
     image: ghcr.io/f5xc-salesdemos/capsule-store:latest
     pull_policy: always
@@ -39,8 +46,7 @@ services:
       - lab
 
   dragon-radar-api:
-    image: ghcr.io/f5xc-salesdemos/dragon-radar-api:latest
-    pull_policy: always
+    build: ./dragon-radar-api
     ports:
       - "3001:3001"
     restart: always
