@@ -53,21 +53,49 @@
                         <input type="checkbox" name="radar-test" value="rate-limiting" checked>
                         <span class="checkbox-custom"></span>
                         <span class="test-name">Rate Limiting</span>
+                        <button type="button" class="info-btn" data-test="rate-limiting" data-panel="radar" aria-label="Test details">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <line x1="12" y1="16" x2="12" y2="12"/>
+                                <line x1="12" y1="8" x2="12.01" y2="8"/>
+                            </svg>
+                        </button>
                     </label>
                     <label class="test-option">
                         <input type="checkbox" name="radar-test" value="caching" checked>
                         <span class="checkbox-custom"></span>
                         <span class="test-name">Caching Strategy</span>
+                        <button type="button" class="info-btn" data-test="caching" data-panel="radar" aria-label="Test details">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <line x1="12" y1="16" x2="12" y2="12"/>
+                                <line x1="12" y1="8" x2="12.01" y2="8"/>
+                            </svg>
+                        </button>
                     </label>
                     <label class="test-option">
                         <input type="checkbox" name="radar-test" value="performance" checked>
                         <span class="checkbox-custom"></span>
                         <span class="test-name">Global Performance</span>
+                        <button type="button" class="info-btn" data-test="performance" data-panel="radar" aria-label="Test details">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <line x1="12" y1="16" x2="12" y2="12"/>
+                                <line x1="12" y1="8" x2="12.01" y2="8"/>
+                            </svg>
+                        </button>
                     </label>
                     <label class="test-option">
                         <input type="checkbox" name="radar-test" value="security" checked>
                         <span class="checkbox-custom"></span>
                         <span class="test-name">API Security</span>
+                        <button type="button" class="info-btn" data-test="security" data-panel="radar" aria-label="Test details">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <line x1="12" y1="16" x2="12" y2="12"/>
+                                <line x1="12" y1="8" x2="12.01" y2="8"/>
+                            </svg>
+                        </button>
                     </label>
                 </div>
 
@@ -113,21 +141,49 @@
                         <input type="checkbox" name="store-test" value="waf" checked>
                         <span class="checkbox-custom"></span>
                         <span class="test-name">WAF Protection</span>
+                        <button type="button" class="info-btn" data-test="waf" data-panel="store" aria-label="Test details">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <line x1="12" y1="16" x2="12" y2="12"/>
+                                <line x1="12" y1="8" x2="12.01" y2="8"/>
+                            </svg>
+                        </button>
                     </label>
                     <label class="test-option">
                         <input type="checkbox" name="store-test" value="bot" checked>
                         <span class="checkbox-custom"></span>
                         <span class="test-name">Bot Protection</span>
+                        <button type="button" class="info-btn" data-test="bot" data-panel="store" aria-label="Test details">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <line x1="12" y1="16" x2="12" y2="12"/>
+                                <line x1="12" y1="8" x2="12.01" y2="8"/>
+                            </svg>
+                        </button>
                     </label>
                     <label class="test-option">
                         <input type="checkbox" name="store-test" value="ddos" checked>
                         <span class="checkbox-custom"></span>
                         <span class="test-name">DDoS Mitigation</span>
+                        <button type="button" class="info-btn" data-test="ddos" data-panel="store" aria-label="Test details">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <line x1="12" y1="16" x2="12" y2="12"/>
+                                <line x1="12" y1="8" x2="12.01" y2="8"/>
+                            </svg>
+                        </button>
                     </label>
                     <label class="test-option">
                         <input type="checkbox" name="store-test" value="pci" checked>
                         <span class="checkbox-custom"></span>
                         <span class="test-name">PCI Compliance</span>
+                        <button type="button" class="info-btn" data-test="pci" data-panel="store" aria-label="Test details">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <line x1="12" y1="16" x2="12" y2="12"/>
+                                <line x1="12" y1="8" x2="12.01" y2="8"/>
+                            </svg>
+                        </button>
                     </label>
                 </div>
 
@@ -155,6 +211,28 @@
         <p>Capsule Corporation Security Division</p>
         <p class="footer-sub">"It's over 9000!" - Vegeta, probably</p>
     </footer>
+
+    <!-- Test Info Modal -->
+    <div class="modal-overlay" id="test-modal" aria-hidden="true">
+        <div class="modal-content">
+            <button class="modal-close" aria-label="Close modal">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"/>
+                    <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+            </button>
+            <div class="modal-header">
+                <div class="modal-icon"></div>
+                <h3 class="modal-title"></h3>
+            </div>
+            <div class="modal-body">
+                <p class="modal-description"></p>
+            </div>
+            <div class="modal-footer">
+                <span class="modal-badge">TECHNICAL SPEC</span>
+            </div>
+        </div>
+    </div>
 
     <script src="js/app.js"></script>
 </body>

@@ -1,9 +1,50 @@
 // Scouter App - Frontend JavaScript
 
+// Test descriptions for info modals
+const TEST_DESCRIPTIONS = {
+  radar: {
+    'rate-limiting': {
+      name: 'Rate Limiting',
+      description: 'Sends 50 rapid requests to the /api/radar/scan endpoint within 2 seconds. Verifies that HTTP 429 (Too Many Requests) responses are returned when rate limits are exceeded. A successful test indicates F5 XC rate limiting policies are properly configured.'
+    },
+    'caching': {
+      name: 'Caching Strategy',
+      description: 'Compares Cache-Control headers and response times between initial and subsequent requests to verify CDN caching is active. Measures cache hit ratio and validates proper cache key configuration for the Dragon Radar API.'
+    },
+    'performance': {
+      name: 'Global Performance',
+      description: 'Validates the target resolves to a public IP, then measures round-trip latency across 3 requests to /api/radar/scan. Classifies performance as: Excellent (<50ms), Good (<100ms), Acceptable (<150ms), Marginal (<200ms), or Poor (>200ms).'
+    },
+    'security': {
+      name: 'API Security',
+      description: 'Tests SQL injection in URL paths, directory traversal attempts (../../etc/passwd), and oversized header attacks (10KB headers). Verifies that F5 XC WAF returns 403 or 400 blocking responses for each malicious payload.'
+    }
+  },
+  store: {
+    'waf': {
+      name: 'WAF Protection',
+      description: 'Sends OWASP Top 10 attack patterns including XSS payloads, SQL injection strings, and command injection attempts. Counts blocked vs allowed requests to measure WAF effectiveness and signature coverage.'
+    },
+    'bot': {
+      name: 'Bot Protection',
+      description: 'Tests with automated user-agent strings (curl, python-requests, headless browsers) and suspicious request patterns (rapid sequential requests, missing headers). Verifies bot mitigation rules trigger appropriate challenges or blocks.'
+    },
+    'ddos': {
+      name: 'DDoS Mitigation',
+      description: 'Simulates burst traffic patterns with concurrent request floods. Checks for rate limiting responses, JavaScript challenges, and CAPTCHA triggers. Validates that legitimate traffic patterns are not impacted.'
+    },
+    'pci': {
+      name: 'PCI Compliance',
+      description: 'Validates TLS version (1.2+ required), cipher suite strength, HSTS headers, and security headers (X-Frame-Options, X-Content-Type-Options). Checks for PCI-DSS 4.0 compliance requirements on payment API endpoints.'
+    }
+  }
+};
+
 class ScouterApp {
   constructor() {
     this.ws = null;
     this.activeScans = new Set();
+    this.modal = document.getElementById('test-modal');
     this.initEventListeners();
   }
 
@@ -17,6 +58,54 @@ class ScouterApp {
     document.getElementById('store-scan').addEventListener('click', () => {
       this.startScan('store');
     });
+
+    // Info button clicks
+    document.querySelectorAll('.info-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const testId = btn.dataset.test;
+        const panel = btn.dataset.panel;
+        this.showTestInfo(panel, testId);
+      });
+    });
+
+    // Modal close button
+    this.modal.querySelector('.modal-close').addEventListener('click', () => {
+      this.closeModal();
+    });
+
+    // Click outside modal to close
+    this.modal.addEventListener('click', (e) => {
+      if (e.target === this.modal) {
+        this.closeModal();
+      }
+    });
+
+    // Escape key to close modal
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && this.modal.classList.contains('active')) {
+        this.closeModal();
+      }
+    });
+  }
+
+  showTestInfo(panel, testId) {
+    const testData = TEST_DESCRIPTIONS[panel]?.[testId];
+    if (!testData) return;
+
+    this.modal.querySelector('.modal-title').textContent = testData.name;
+    this.modal.querySelector('.modal-description').textContent = testData.description;
+    this.modal.classList.add('active');
+    this.modal.setAttribute('aria-hidden', 'false');
+
+    // Focus trap for accessibility
+    this.modal.querySelector('.modal-close').focus();
+  }
+
+  closeModal() {
+    this.modal.classList.remove('active');
+    this.modal.setAttribute('aria-hidden', 'true');
   }
 
   getSelectedTests(target) {
