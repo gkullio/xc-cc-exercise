@@ -368,7 +368,7 @@ async function testSecurity(baseUrl, sendUpdate) {
   try {
     // Phase 1: Verify normal request works
     sendUpdate({ phase: 'Verifying normal request...' });
-    const normalResponse = await axios.get(`${baseUrl}/radar/scan`, {
+    const normalResponse = await axios.get(`${baseUrl}/radar/health`, {
       timeout: 10000,
       validateStatus: () => true
     });
@@ -431,7 +431,7 @@ async function testSecurity(baseUrl, sendUpdate) {
     // Phase 4: Attack - Oversized header
     sendUpdate({ phase: 'Testing oversized header protection...' });
     try {
-      const oversizedResponse = await axios.get(`${baseUrl}/radar/scan`, {
+      const oversizedResponse = await axios.get(`${baseUrl}/radar/health`, {
         timeout: 10000,
         validateStatus: () => true,
         headers: {

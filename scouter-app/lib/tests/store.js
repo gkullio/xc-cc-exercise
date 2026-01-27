@@ -294,7 +294,7 @@ async function testDdos(baseUrl, sendUpdate) {
     debug: { requests: [], responses: [] }
   };
 
-  const BURST_SIZE = 100;
+  const BURST_SIZE = 200;
 
   try {
     // Phase 1: Verify normal request works
