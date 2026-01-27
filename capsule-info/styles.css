@@ -1292,11 +1292,45 @@ p {
     border-radius: 4px;
 }
 
+/* Architecture Diagram */
+.arch-diagram-container {
+    background: var(--bg-card);
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    overflow: hidden;
+}
+
+.arch-diagram {
+    width: 100%;
+    max-width: 800px;
+    height: auto;
+    margin: 0 auto;
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .arch-diagram-container {
+        padding: 1rem;
+        overflow-x: auto;
+    }
+
+    .arch-diagram {
+        min-width: 600px;
+    }
+}
+
 /* Architecture Grid */
 .arch-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 1.5rem;
+}
+
+.arch-grid.arch-grid-single {
+    grid-template-columns: minmax(280px, 400px);
+    justify-content: center;
 }
 
 .arch-card {
