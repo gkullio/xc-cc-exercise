@@ -10,7 +10,7 @@ info:
     name: Capsule Corporation
     url: https://capsulecorp.example.com
 servers:
-  - url: /api/radar
+  - url: /radar
     description: Dragon Radar API base path
 paths:
   /health:
