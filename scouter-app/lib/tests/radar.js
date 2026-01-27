@@ -1,8 +1,81 @@
 const axios = require('axios');
+const dns = require('dns').promises;
 
 // Test configurations
 const RATE_LIMIT_REQUESTS = 50;
 const RATE_LIMIT_WINDOW_MS = 2000;
+
+// RFC1918 private address ranges
+const PRIVATE_RANGES = [
+  { start: '10.0.0.0', end: '10.255.255.255' },      // 10.0.0.0/8
+  { start: '172.16.0.0', end: '172.31.255.255' },   // 172.16.0.0/12
+  { start: '192.168.0.0', end: '192.168.255.255' }  // 192.168.0.0/16
+];
+
+function ipToLong(ip) {
+  const parts = ip.split('.').map(Number);
+  return (parts[0] << 24) + (parts[1] << 16) + (parts[2] << 8) + parts[3];
+}
+
+function isPrivateIP(ip) {
+  const ipLong = ipToLong(ip);
+  return PRIVATE_RANGES.some(range => {
+    const startLong = ipToLong(range.start);
+    const endLong = ipToLong(range.end);
+    return ipLong >= startLong && ipLong <= endLong;
+  });
+}
+
+function isIPv4Address(str) {
+  const ipv4Regex = /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/;
+  const match = str.match(ipv4Regex);
+  if (!match) return false;
+  return match.slice(1).every(octet => {
+    const num = parseInt(octet, 10);
+    return num >= 0 && num <= 255;
+  });
+}
+
+/**
+ * Resolve hostname and check if it's a public (non-RFC1918) address
+ * Returns { valid: true, ip } or { valid: false, error }
+ */
+async function validatePublicAddress(baseUrl) {
+  let hostname;
+  try {
+    const url = baseUrl.startsWith('http') ? baseUrl : `https://${baseUrl}`;
+    const parsed = new URL(url);
+    hostname = parsed.hostname;
+  } catch (err) {
+    return { valid: false, error: `Invalid URL: ${err.message}` };
+  }
+
+  // If already an IP address, check directly
+  if (isIPv4Address(hostname)) {
+    if (isPrivateIP(hostname)) {
+      return { valid: false, error: `Cannot test latency - ${hostname} is a private address (RFC1918)` };
+    }
+    return { valid: true, ip: hostname };
+  }
+
+  // Resolve hostname to IP
+  try {
+    const addresses = await dns.resolve4(hostname);
+    if (addresses.length === 0) {
+      return { valid: false, error: `No A records found for ${hostname}` };
+    }
+    const ip = addresses[0];
+    if (isPrivateIP(ip)) {
+      return { valid: false, error: `Cannot test latency - ${hostname} resolves to private address ${ip} (RFC1918)` };
+    }
+    return { valid: true, ip };
+  } catch (err) {
+    if (err.code === 'ENOTFOUND') {
+      return { valid: false, error: `Hostname not found: ${hostname}` };
+    }
+    return { valid: false, error: `DNS lookup failed: ${err.message}` };
+  }
+}
 
 /**
  * Run rate limiting test
@@ -192,6 +265,20 @@ async function testPerformance(baseUrl, sendUpdate) {
   };
 
   try {
+    // Validate that FQDN resolves to a public (non-RFC1918) address
+    sendUpdate({ phase: 'Validating target address...' });
+    const addressCheck = await validatePublicAddress(baseUrl);
+    results.debug.addressCheck = addressCheck;
+
+    if (!addressCheck.valid) {
+      results.details.push({ phase: 'Address Validation', result: addressCheck.error });
+      results.details.push({ phase: 'Note', result: 'Latency tests require an externally routable address' });
+      return results;
+    }
+
+    results.details.push({ phase: 'Address Validation', result: `✓ Resolves to public IP ${addressCheck.ip}` });
+    results.powerLevel = 500;
+
     sendUpdate({ phase: 'Measuring response time...' });
 
     // Take multiple measurements
