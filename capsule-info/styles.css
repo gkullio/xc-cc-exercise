@@ -1903,6 +1903,208 @@ p {
 }
 
 /* ===================================
+   Info Button & Test Modal
+   =================================== */
+.info-btn {
+    background: none;
+    border: none;
+    padding: 0.25rem;
+    margin-left: auto;
+    cursor: pointer;
+    opacity: 0.4;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.info-btn svg {
+    width: 18px;
+    height: 18px;
+    stroke: var(--text-secondary);
+    transition: stroke 0.2s ease;
+}
+
+.info-btn:hover {
+    opacity: 1;
+    transform: scale(1.15);
+}
+
+.info-btn:hover svg {
+    stroke: var(--ki-gold);
+    filter: drop-shadow(0 0 6px rgba(244, 160, 32, 0.6));
+}
+
+@keyframes modalFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes scanLineModal {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(13, 18, 30, 0.92);
+    backdrop-filter: blur(6px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+    animation: modalFadeIn 0.3s ease-out;
+}
+
+.modal-content {
+    background: var(--bg-card);
+    border: 2px solid var(--ki-orange);
+    max-width: 520px;
+    width: 90%;
+    position: relative;
+    overflow: hidden;
+    transform: translateY(-20px) scale(0.95);
+    opacity: 0;
+    transition: transform 0.3s, opacity 0.3s;
+    clip-path: var(--clip-corner);
+    box-shadow:
+        0 0 50px rgba(239, 68, 68, 0.3),
+        0 0 100px rgba(239, 68, 68, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.modal-overlay.active .modal-content {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+/* Scouter scan line effect */
+.modal-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--severity-critical), transparent);
+    animation: scanLineModal 2s linear infinite;
+}
+
+.modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    z-index: 10;
+}
+
+.modal-close svg {
+    width: 20px;
+    height: 20px;
+    stroke: var(--text-muted);
+    transition: stroke 0.2s ease;
+}
+
+.modal-close:hover {
+    background: var(--bg-card-hover);
+}
+
+.modal-close:hover svg {
+    stroke: var(--text-bright);
+}
+
+.modal-header {
+    padding: 1.75rem 1.75rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    border-bottom: 2px solid var(--border);
+    background: linear-gradient(135deg, var(--bg-card-hover), var(--bg-card));
+}
+
+.modal-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--severity-critical), #dc2626);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 25px rgba(239, 68, 68, 0.5);
+    flex-shrink: 0;
+}
+
+.modal-icon::after {
+    content: 'i';
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: white;
+}
+
+.modal-title {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--text-bright);
+    letter-spacing: 1px;
+}
+
+.modal-body {
+    padding: 1.75rem;
+}
+
+.modal-description {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    line-height: 1.8;
+    color: var(--text-secondary);
+}
+
+.modal-footer {
+    padding: 1rem 1.75rem;
+    border-top: 2px solid var(--border);
+    display: flex;
+    justify-content: flex-end;
+}
+
+.modal-badge {
+    font-family: var(--font-display);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    color: var(--ki-gold);
+    background: rgba(244, 160, 32, 0.1);
+    padding: 0.35rem 0.85rem;
+    border: 1px solid rgba(244, 160, 32, 0.3);
+    clip-path: var(--clip-badge);
+}
+
+/* ===================================
    Print Styles
    =================================== */
 @media print {

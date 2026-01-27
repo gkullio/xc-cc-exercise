@@ -1,9 +1,60 @@
 // Scouter - Security Configuration Validator
 
+// Test descriptions for info modals
+const TEST_DESCRIPTIONS = {
+  radar: {
+    'rate-limiting': {
+      name: 'Rate Limiting',
+      description: 'Sends 50 rapid requests to the /api/radar/scan endpoint within 2 seconds. Verifies that HTTP 429 (Too Many Requests) responses are returned when rate limits are exceeded. A successful test indicates F5 XC rate limiting policies are properly configured.'
+    },
+    'oas-validation': {
+      name: 'OAS Validation',
+      description: 'Tests OpenAPI Specification enforcement by calling documented endpoints (should succeed) and undocumented shadow endpoints like /api/radar/shadow-protocol (should be blocked with 403). Validates that F5 XC API Discovery is enforcing the uploaded API spec.'
+    },
+    'performance': {
+      name: 'Global Performance',
+      description: 'Validates the target resolves to a public IP, then measures round-trip latency across 3 requests to /api/radar/scan. Classifies performance as: Excellent (<50ms), Good (<100ms), Acceptable (<150ms), Marginal (<200ms), or Poor (>200ms).'
+    },
+    'security': {
+      name: 'API Security',
+      description: 'Tests SQL injection in URL paths, directory traversal attempts (../../etc/passwd), and oversized header attacks (10KB headers). Verifies that F5 XC WAF returns 403 or 400 blocking responses for each malicious payload.'
+    }
+  },
+  store: {
+    'waf': {
+      name: 'WAF Protection',
+      description: 'Sends OWASP Top 10 attack patterns including XSS payloads (<script>alert(1)</script>), SQL injection strings, and command injection attempts. Counts blocked vs allowed requests to measure WAF effectiveness and signature coverage.'
+    },
+    'bot': {
+      name: 'Bot Protection',
+      description: 'Tests with automated user-agent strings (curl, python-requests, headless browsers) and suspicious request patterns (rapid sequential requests, missing headers). Verifies bot mitigation rules trigger appropriate challenges or blocks.'
+    },
+    'ddos': {
+      name: 'DDoS Mitigation',
+      description: 'Simulates burst traffic patterns with concurrent request floods. Checks for rate limiting responses (429), JavaScript challenges, and CAPTCHA triggers. Validates that legitimate traffic patterns are not impacted by protection rules.'
+    },
+    'pci': {
+      name: 'PCI Compliance',
+      description: 'Validates TLS version (1.2+ required), cipher suite strength, HSTS headers, and security headers (X-Frame-Options, X-Content-Type-Options, Content-Security-Policy). Checks for PCI-DSS 4.0 compliance requirements on payment API endpoints.'
+    }
+  },
+  chamber: {
+    'availability': {
+      name: 'Chamber Availability',
+      description: 'Establishes a WebSocket connection to the Gravity Chamber control system at ws://[host]:3003/chamber. Verifies the chamber responds with valid state data including status information. Tests real-time connectivity to the chamber backend.'
+    },
+    'private-network': {
+      name: 'Private Network (RFC1918)',
+      description: 'Resolves the target FQDN to an IP address and verifies it falls within RFC1918 private ranges (10.0.0.0/8, 172.16.0.0/12, or 192.168.0.0/16). The Gravity Chamber should NOT be publicly accessible - this test confirms proper network segmentation via F5 XC.'
+    }
+  }
+};
+
 class ScouterApp {
   constructor() {
     this.ws = null;
     this.activeScans = new Set();
+    this.modal = document.getElementById('test-modal');
     this.initEventListeners();
   }
 
@@ -19,6 +70,54 @@ class ScouterApp {
     document.getElementById('chamber-scan').addEventListener('click', () => {
       this.startScan('chamber');
     });
+
+    // Info button clicks
+    document.querySelectorAll('.info-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const testId = btn.dataset.test;
+        const panel = btn.dataset.panel;
+        this.showTestInfo(panel, testId);
+      });
+    });
+
+    // Modal close button
+    this.modal.querySelector('.modal-close').addEventListener('click', () => {
+      this.closeModal();
+    });
+
+    // Click outside modal to close
+    this.modal.addEventListener('click', (e) => {
+      if (e.target === this.modal) {
+        this.closeModal();
+      }
+    });
+
+    // Escape key to close modal
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && this.modal.classList.contains('active')) {
+        this.closeModal();
+      }
+    });
+  }
+
+  showTestInfo(panel, testId) {
+    const testData = TEST_DESCRIPTIONS[panel]?.[testId];
+    if (!testData) return;
+
+    this.modal.querySelector('.modal-title').textContent = testData.name;
+    this.modal.querySelector('.modal-description').textContent = testData.description;
+    this.modal.classList.add('active');
+    this.modal.setAttribute('aria-hidden', 'false');
+
+    // Focus close button for accessibility
+    this.modal.querySelector('.modal-close').focus();
+  }
+
+  closeModal() {
+    this.modal.classList.remove('active');
+    this.modal.setAttribute('aria-hidden', 'true');
   }
 
   getSelectedTests(target) {
