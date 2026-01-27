@@ -22,11 +22,14 @@ async function runTests(sendEvent, target, fqdn, tests) {
     return;
   }
 
-  // Ensure HTTPS protocol
-  let baseUrl = fqdn;
+  // Sanitize input: trim, strip trailing slashes and paths
+  let baseUrl = fqdn.trim().replace(/\/+$/, '');
   if (!baseUrl.startsWith('http://') && !baseUrl.startsWith('https://')) {
     baseUrl = `https://${baseUrl}`;
   }
+  // Remove any path component — we only want the origin
+  const parsed = new URL(baseUrl);
+  baseUrl = `${parsed.protocol}//${parsed.host}`;
 
   let totalPowerLevel = 0;
   let maxPossible = 0;
