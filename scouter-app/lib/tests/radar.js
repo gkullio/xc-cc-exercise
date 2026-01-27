@@ -476,8 +476,8 @@ async function testSecurity(baseUrl, sendUpdate) {
 }
 
 module.exports = {
-  'rate-limiting': testRateLimiting,
   'oas-validation': testOasValidation,
+  'rate-limiting': testRateLimiting,
   'performance': testPerformance,
   'security': testSecurity
 };

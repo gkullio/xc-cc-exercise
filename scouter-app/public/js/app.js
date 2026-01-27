@@ -3,17 +3,17 @@
 // Test descriptions for info modals
 const TEST_DESCRIPTIONS = {
   radar: {
+    'oas-validation': {
+      name: 'OAS Validation',
+      description: 'Tests that F5 XC is enforcing the OpenAPI spec by first verifying a documented endpoint (/radar/scan) returns 200, then requesting an undocumented endpoint (/radar/shadow-protocol). A 403 response confirms OAS enforcement is active.'
+    },
     'rate-limiting': {
       name: 'Rate Limiting',
-      description: 'Sends 50 rapid requests to the /api/radar/scan endpoint within 2 seconds. Verifies that HTTP 429 (Too Many Requests) responses are returned when rate limits are exceeded. A successful test indicates F5 XC rate limiting policies are properly configured.'
-    },
-    'caching': {
-      name: 'Caching Strategy',
-      description: 'Compares Cache-Control headers and response times between initial and subsequent requests to verify CDN caching is active. Measures cache hit ratio and validates proper cache key configuration for the Dragon Radar API.'
+      description: 'Sends 50 rapid requests to the /radar/scan endpoint within 2 seconds. Verifies that HTTP 429 (Too Many Requests) responses are returned when rate limits are exceeded. A successful test indicates F5 XC rate limiting policies are properly configured.'
     },
     'performance': {
       name: 'Global Performance',
-      description: 'Validates the target resolves to a public IP, then measures round-trip latency across 3 requests to /api/radar/scan. Classifies performance as: Excellent (<50ms), Good (<100ms), Acceptable (<150ms), Marginal (<200ms), or Poor (>200ms).'
+      description: 'Validates the target resolves to a public IP, then measures round-trip latency across 3 requests to /radar/scan. Classifies performance as: Excellent (<50ms), Good (<100ms), Acceptable (<150ms), Marginal (<200ms), or Poor (>200ms).'
     },
     'security': {
       name: 'API Security',
