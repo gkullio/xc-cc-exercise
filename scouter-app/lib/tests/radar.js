@@ -5,6 +5,16 @@ const dns = require('dns').promises;
 const RATE_LIMIT_REQUESTS = 50;
 const RATE_LIMIT_WINDOW_MS = 2000;
 
+/**
+ * Check if an HTTP response is a WAF block page from F5 XC.
+ * F5 XC returns HTTP 200 with a block page containing a support ID.
+ */
+function isWafBlocked(response) {
+  if (!response || !response.data) return false;
+  const body = typeof response.data === 'string' ? response.data : JSON.stringify(response.data);
+  return /support\s*id/i.test(body);
+}
+
 // RFC1918 private address ranges
 const PRIVATE_RANGES = [
   { start: '10.0.0.0', end: '10.255.255.255' },      // 10.0.0.0/8
@@ -93,7 +103,7 @@ async function testRateLimiting(baseUrl, sendUpdate) {
   try {
     // Phase 1: Verify normal request works
     sendUpdate({ phase: 'Verifying normal request...' });
-    const normalResponse = await axios.get(`${baseUrl}/api/radar/scan`, {
+    const normalResponse = await axios.get(`${baseUrl}/radar/scan`, {
       timeout: 10000,
       validateStatus: () => true
     });
@@ -118,7 +128,7 @@ async function testRateLimiting(baseUrl, sendUpdate) {
     const rapidPromises = [];
     for (let i = 0; i < RATE_LIMIT_REQUESTS; i++) {
       rapidPromises.push(
-        axios.get(`${baseUrl}/api/radar/scan`, {
+        axios.get(`${baseUrl}/radar/scan`, {
           timeout: 10000,
           validateStatus: () => true
         }).catch(err => ({ status: 0, error: err.message }))
@@ -197,42 +207,43 @@ async function testOasValidation(baseUrl, sendUpdate) {
 
   try {
     // Phase 1: Verify documented endpoint works
-    sendUpdate({ phase: 'Verifying documented endpoint (/api/radar/scan)...' });
-    const validResponse = await axios.get(`${baseUrl}/api/radar/scan`, {
+    sendUpdate({ phase: 'Verifying documented endpoint (/radar/scan)...' });
+    const validResponse = await axios.get(`${baseUrl}/radar/scan`, {
       timeout: 10000,
       validateStatus: () => true
     });
 
     results.debug.responses.push({
       phase: 'documented-endpoint',
-      url: '/api/radar/scan',
+      url: '/radar/scan',
       status: validResponse.status
     });
 
     if (validResponse.status === 200) {
-      results.details.push({ phase: 'Documented endpoint', result: '200 OK - /api/radar/scan accessible' });
+      results.details.push({ phase: 'Documented endpoint', result: '200 OK - /radar/scan accessible' });
       results.powerLevel = 1000;
     } else {
-      results.details.push({ phase: 'Documented endpoint', result: `${validResponse.status} - /api/radar/scan failed` });
+      results.details.push({ phase: 'Documented endpoint', result: `${validResponse.status} - /radar/scan failed` });
       return results;
     }
 
     // Phase 2: Test undocumented endpoint (should be blocked by OAS enforcement)
-    sendUpdate({ phase: 'Testing undocumented endpoint (/api/radar/shadow-protocol)...' });
-    const shadowResponse = await axios.get(`${baseUrl}/api/radar/shadow-protocol`, {
+    sendUpdate({ phase: 'Testing undocumented endpoint (/radar/shadow-protocol)...' });
+    const shadowResponse = await axios.get(`${baseUrl}/radar/shadow-protocol`, {
       timeout: 10000,
       validateStatus: () => true
     });
 
     results.debug.responses.push({
       phase: 'undocumented-endpoint',
-      url: '/api/radar/shadow-protocol',
+      url: '/radar/shadow-protocol',
       status: shadowResponse.status,
       headers: shadowResponse.headers
     });
 
-    if (shadowResponse.status === 403) {
-      results.details.push({ phase: 'Shadow endpoint', result: 'Blocked (403) - OAS enforcement active' });
+    if (shadowResponse.status === 403 || isWafBlocked(shadowResponse)) {
+      const method = isWafBlocked(shadowResponse) ? 'WAF block page' : '403';
+      results.details.push({ phase: 'Shadow endpoint', result: `Blocked (${method}) - OAS enforcement active` });
       results.powerLevel += 3000;
       results.status = 'pass';
     } else if (shadowResponse.status === 200) {
@@ -285,7 +296,7 @@ async function testPerformance(baseUrl, sendUpdate) {
     const timings = [];
     for (let i = 0; i < 3; i++) {
       const start = Date.now();
-      const response = await axios.get(`${baseUrl}/api/radar/scan`, {
+      const response = await axios.get(`${baseUrl}/radar/scan`, {
         timeout: 10000,
         validateStatus: () => true
       });
@@ -357,7 +368,7 @@ async function testSecurity(baseUrl, sendUpdate) {
   try {
     // Phase 1: Verify normal request works
     sendUpdate({ phase: 'Verifying normal request...' });
-    const normalResponse = await axios.get(`${baseUrl}/api/radar/scan`, {
+    const normalResponse = await axios.get(`${baseUrl}/radar/scan`, {
       timeout: 10000,
       validateStatus: () => true
     });
@@ -377,19 +388,20 @@ async function testSecurity(baseUrl, sendUpdate) {
 
     // Phase 2: Attack - SQL injection in path
     sendUpdate({ phase: 'Testing SQL injection protection...' });
-    const sqlResponse = await axios.get(`${baseUrl}/api/radar/ball/1' OR '1'='1`, {
+    const sqlResponse = await axios.get(`${baseUrl}/radar/ball/1' OR '1'='1`, {
       timeout: 10000,
       validateStatus: () => true
     });
 
     results.debug.responses.push({
       phase: 'sql-injection',
-      url: `/api/radar/ball/1' OR '1'='1`,
+      url: `/radar/ball/1' OR '1'='1`,
       status: sqlResponse.status
     });
 
-    if (sqlResponse.status === 403 || sqlResponse.status === 400) {
-      results.details.push({ phase: 'SQL Injection', result: `Blocked (${sqlResponse.status})` });
+    if (isWafBlocked(sqlResponse) || sqlResponse.status === 403 || sqlResponse.status === 400) {
+      const method = isWafBlocked(sqlResponse) ? 'WAF block page' : sqlResponse.status;
+      results.details.push({ phase: 'SQL Injection', result: `Blocked (${method})` });
       results.powerLevel += 1000;
     } else {
       results.details.push({ phase: 'SQL Injection', result: `Not blocked (${sqlResponse.status})` });
@@ -397,19 +409,20 @@ async function testSecurity(baseUrl, sendUpdate) {
 
     // Phase 3: Attack - Path traversal
     sendUpdate({ phase: 'Testing path traversal protection...' });
-    const pathResponse = await axios.get(`${baseUrl}/api/radar/../../etc/passwd`, {
+    const pathResponse = await axios.get(`${baseUrl}/radar/../../etc/passwd`, {
       timeout: 10000,
       validateStatus: () => true
     });
 
     results.debug.responses.push({
       phase: 'path-traversal',
-      url: `/api/radar/../../etc/passwd`,
+      url: `/radar/../../etc/passwd`,
       status: pathResponse.status
     });
 
-    if (pathResponse.status === 403 || pathResponse.status === 400) {
-      results.details.push({ phase: 'Path Traversal', result: `Blocked (${pathResponse.status})` });
+    if (isWafBlocked(pathResponse) || pathResponse.status === 403 || pathResponse.status === 400) {
+      const method = isWafBlocked(pathResponse) ? 'WAF block page' : pathResponse.status;
+      results.details.push({ phase: 'Path Traversal', result: `Blocked (${method})` });
       results.powerLevel += 500;
     } else {
       results.details.push({ phase: 'Path Traversal', result: `Not blocked (${pathResponse.status})` });
@@ -418,7 +431,7 @@ async function testSecurity(baseUrl, sendUpdate) {
     // Phase 4: Attack - Oversized header
     sendUpdate({ phase: 'Testing oversized header protection...' });
     try {
-      const oversizedResponse = await axios.get(`${baseUrl}/api/radar/scan`, {
+      const oversizedResponse = await axios.get(`${baseUrl}/radar/scan`, {
         timeout: 10000,
         validateStatus: () => true,
         headers: {
@@ -431,8 +444,9 @@ async function testSecurity(baseUrl, sendUpdate) {
         status: oversizedResponse.status
       });
 
-      if (oversizedResponse.status === 403 || oversizedResponse.status === 431) {
-        results.details.push({ phase: 'Oversized Header', result: `Blocked (${oversizedResponse.status})` });
+      if (isWafBlocked(oversizedResponse) || oversizedResponse.status === 403 || oversizedResponse.status === 431) {
+        const method = isWafBlocked(oversizedResponse) ? 'WAF block page' : oversizedResponse.status;
+        results.details.push({ phase: 'Oversized Header', result: `Blocked (${method})` });
         results.powerLevel += 500;
       } else {
         results.details.push({ phase: 'Oversized Header', result: `Not blocked (${oversizedResponse.status})` });

@@ -1,6 +1,16 @@
 const axios = require('axios');
 
 /**
+ * Check if an HTTP response is a WAF block page from F5 XC.
+ * F5 XC returns HTTP 200 with a block page containing a support ID.
+ */
+function isWafBlocked(response) {
+  if (!response || !response.data) return false;
+  const body = typeof response.data === 'string' ? response.data : JSON.stringify(response.data);
+  return /support\s*id/i.test(body);
+}
+
+/**
  * Format axios errors into user-friendly messages
  */
 function formatAxiosError(error) {
@@ -72,8 +82,9 @@ async function testWaf(baseUrl, sendUpdate) {
       status: sqlResponse.status
     });
 
-    if (sqlResponse.status === 403) {
-      results.details.push({ phase: 'SQL Injection', result: 'Blocked (403)' });
+    if (isWafBlocked(sqlResponse) || sqlResponse.status === 403) {
+      const method = isWafBlocked(sqlResponse) ? 'WAF block page' : '403';
+      results.details.push({ phase: 'SQL Injection', result: `Blocked (${method})` });
       results.powerLevel += 1000;
     } else {
       results.details.push({ phase: 'SQL Injection', result: `Not blocked (${sqlResponse.status})` });
@@ -92,8 +103,9 @@ async function testWaf(baseUrl, sendUpdate) {
       status: xssResponse.status
     });
 
-    if (xssResponse.status === 403) {
-      results.details.push({ phase: 'XSS Attack', result: 'Blocked (403)' });
+    if (isWafBlocked(xssResponse) || xssResponse.status === 403) {
+      const method = isWafBlocked(xssResponse) ? 'WAF block page' : '403';
+      results.details.push({ phase: 'XSS Attack', result: `Blocked (${method})` });
       results.powerLevel += 1000;
     } else {
       results.details.push({ phase: 'XSS Attack', result: `Not blocked (${xssResponse.status})` });
@@ -112,8 +124,9 @@ async function testWaf(baseUrl, sendUpdate) {
       status: pathResponse.status
     });
 
-    if (pathResponse.status === 403 || pathResponse.status === 400) {
-      results.details.push({ phase: 'Path Traversal', result: `Blocked (${pathResponse.status})` });
+    if (isWafBlocked(pathResponse) || pathResponse.status === 403 || pathResponse.status === 400) {
+      const method = isWafBlocked(pathResponse) ? 'WAF block page' : pathResponse.status;
+      results.details.push({ phase: 'Path Traversal', result: `Blocked (${method})` });
       results.powerLevel += 1000;
     } else {
       results.details.push({ phase: 'Path Traversal', result: `Not blocked (${pathResponse.status})` });
@@ -188,10 +201,10 @@ async function testBot(baseUrl, sendUpdate) {
       headers: botResponse.headers
     });
 
-    // Check for bot challenge (could be 403, 429, or redirect to challenge page)
-    if (botResponse.status === 403 || botResponse.status === 429 ||
-        (botResponse.headers['content-type'] || '').includes('text/html')) {
-      results.details.push({ phase: 'Bot User-Agent', result: `Challenged/Blocked (${botResponse.status})` });
+    // Check for bot challenge (could be WAF block page, 403, 429, or redirect to challenge page)
+    if (isWafBlocked(botResponse) || botResponse.status === 403 || botResponse.status === 429) {
+      const method = isWafBlocked(botResponse) ? 'WAF block page' : botResponse.status;
+      results.details.push({ phase: 'Bot User-Agent', result: `Challenged/Blocked (${method})` });
       results.powerLevel += 700;
     } else {
       results.details.push({ phase: 'Bot User-Agent', result: `Not detected (${botResponse.status})` });
@@ -216,7 +229,7 @@ async function testBot(baseUrl, sendUpdate) {
     }
 
     const loginResponses = await Promise.all(loginPromises);
-    const blocked = loginResponses.filter(r => r.status === 429 || r.status === 403).length;
+    const blocked = loginResponses.filter(r => r.status === 429 || r.status === 403 || isWafBlocked(r)).length;
     const failed401 = loginResponses.filter(r => r.status === 401).length;
 
     results.debug.responses.push({
@@ -246,8 +259,9 @@ async function testBot(baseUrl, sendUpdate) {
       status: noHeaderResponse.status
     });
 
-    if (noHeaderResponse.status === 403 || noHeaderResponse.status === 429) {
-      results.details.push({ phase: 'Headerless Request', result: `Blocked (${noHeaderResponse.status})` });
+    if (isWafBlocked(noHeaderResponse) || noHeaderResponse.status === 403 || noHeaderResponse.status === 429) {
+      const method = isWafBlocked(noHeaderResponse) ? 'WAF block page' : noHeaderResponse.status;
+      results.details.push({ phase: 'Headerless Request', result: `Blocked (${method})` });
       results.powerLevel += 700;
     } else {
       results.details.push({ phase: 'Headerless Request', result: `Not blocked (${noHeaderResponse.status})` });
@@ -445,7 +459,7 @@ async function testPci(baseUrl, sendUpdate) {
       status: sensitiveResponse.status
     });
 
-    if (sensitiveResponse.status === 403 || sensitiveResponse.status === 400) {
+    if (isWafBlocked(sensitiveResponse) || sensitiveResponse.status === 403 || sensitiveResponse.status === 400) {
       results.details.push({ phase: 'Sensitive URL Params', result: 'Blocked' });
       results.powerLevel += 500;
     } else {

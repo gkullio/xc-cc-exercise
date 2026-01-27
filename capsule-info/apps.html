@@ -49,6 +49,7 @@
                 <div class="app-title">
                     <h2>Dragon Radar API</h2>
                     <span class="app-badge">REST API</span>
+                    <span class="app-badge app-badge-port">:3001</span>
                 </div>
             </div>
 
@@ -71,22 +72,22 @@
                     <div class="endpoint-list">
                         <div class="endpoint">
                             <span class="method get">GET</span>
-                            <code>/api/radar/scan</code>
+                            <code>/radar/scan</code>
                             <span class="endpoint-desc">Get all 7 Dragon Ball positions</span>
                         </div>
                         <div class="endpoint">
                             <span class="method get">GET</span>
-                            <code>/api/radar/ball/:id</code>
+                            <code>/radar/ball/:id</code>
                             <span class="endpoint-desc">Get single ball position (1-7)</span>
                         </div>
                         <div class="endpoint">
                             <span class="method get">GET</span>
-                            <code>/api/radar/distance?lat=X&long=Y</code>
+                            <code>/radar/distance?lat=X&amp;long=Y</code>
                             <span class="endpoint-desc">Find nearest ball to coordinates</span>
                         </div>
                         <div class="endpoint">
                             <span class="method get">GET</span>
-                            <code>/api/radar/health</code>
+                            <code>/radar/health</code>
                             <span class="endpoint-desc">Health check endpoint</span>
                         </div>
                     </div>
@@ -125,6 +126,7 @@
                 <div class="app-title">
                     <h2>Capsule Corp Store</h2>
                     <span class="app-badge">E-Commerce</span>
+                    <span class="app-badge app-badge-port">:3000</span>
                 </div>
             </div>
 
@@ -222,6 +224,7 @@
                 <div class="app-title">
                     <h2>Gravity Chamber</h2>
                     <span class="app-badge">WebSocket</span>
+                    <span class="app-badge app-badge-port">:3003</span>
                 </div>
             </div>
 
@@ -448,25 +451,6 @@
             </svg>
         </div>
 
-        <div class="arch-grid arch-grid-single">
-            <div class="arch-card">
-                <h3>Ports</h3>
-                <div class="port-list">
-                    <div class="port">
-                        <span class="port-num">3000</span>
-                        <span class="port-app">Capsule Store</span>
-                    </div>
-                    <div class="port">
-                        <span class="port-num">3001</span>
-                        <span class="port-app">Dragon Radar API</span>
-                    </div>
-                    <div class="port">
-                        <span class="port-num">3003</span>
-                        <span class="port-app">Gravity Chamber</span>
-                    </div>
-                </div>
-            </div>
-        </div>
     </section>
 
     <!-- Footer -->

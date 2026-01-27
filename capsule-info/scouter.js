@@ -5,19 +5,19 @@ const TEST_DESCRIPTIONS = {
   radar: {
     'rate-limiting': {
       name: 'Rate Limiting',
-      description: 'Sends 50 rapid requests to the /api/radar/scan endpoint within 2 seconds. Verifies that HTTP 429 (Too Many Requests) responses are returned when rate limits are exceeded. A successful test indicates F5 XC rate limiting policies are properly configured.'
+      description: 'Sends 50 rapid requests to the /radar/scan endpoint within 2 seconds. Verifies that HTTP 429 (Too Many Requests) responses are returned when rate limits are exceeded. A successful test indicates F5 XC rate limiting policies are properly configured.'
     },
     'oas-validation': {
       name: 'OAS Validation',
-      description: 'Tests OpenAPI Specification enforcement by calling documented endpoints (should succeed) and undocumented shadow endpoints like /api/radar/shadow-protocol (should be blocked with 403). Validates that F5 XC API Discovery is enforcing the uploaded API spec.'
+      description: 'Tests OpenAPI Specification enforcement by calling documented endpoints (should succeed) and undocumented shadow endpoints like /radar/shadow-protocol (should be blocked). Validates that F5 XC API Discovery is enforcing the uploaded API spec.'
     },
     'performance': {
       name: 'Global Performance',
-      description: 'Validates the target resolves to a public IP, then measures round-trip latency across 3 requests to /api/radar/scan. Classifies performance as: Excellent (<50ms), Good (<100ms), Acceptable (<150ms), Marginal (<200ms), or Poor (>200ms).'
+      description: 'Validates the target resolves to a public IP, then measures round-trip latency across 3 requests to /radar/scan. Classifies performance as: Excellent (<50ms), Good (<100ms), Acceptable (<150ms), Marginal (<200ms), or Poor (>200ms).'
     },
     'security': {
       name: 'API Security',
-      description: 'Tests SQL injection in URL paths, directory traversal attempts (../../etc/passwd), and oversized header attacks (10KB headers). Verifies that F5 XC WAF returns 403 or 400 blocking responses for each malicious payload.'
+      description: 'Tests SQL injection in URL paths, directory traversal attempts (../../etc/passwd), and oversized header attacks (10KB headers). Verifies that F5 XC WAF blocks each malicious payload by checking for a support ID in the response body.'
     }
   },
   store: {
