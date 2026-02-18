@@ -1,0 +1,39 @@
+networks:
+  lab:
+    driver: bridge
+
+services:
+  # --- Gateway (8081) ---
+  gateway:
+    image: ghcr.io/f5xc-salesdemos/gateway:latest
+    pull_policy: always
+    ports:
+      - "8081:8081"
+    restart: always
+    networks:
+      - lab
+    depends_on:
+      - dragon-radar-api
+      - gravity-chamber
+
+ # --- App Ports (3000 range) ---
+  dragon-radar-api:
+    image: ghcr.io/f5xc-salesdemos/dragon-radar-api:latest
+    pull_policy: always
+    ports:
+      - "3001:3001"
+    restart: always
+    networks:
+      - lab
+
+  gravity-chamber:
+    image: ghcr.io/f5xc-salesdemos/gravity-chamber:latest
+    pull_policy: always
+    ports:
+      - "3003:3003"
+    restart: always
+    networks:
+      - lab
+
+  # --- Internal Services ---
+  
