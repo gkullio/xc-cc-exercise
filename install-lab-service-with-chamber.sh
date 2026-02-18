@@ -19,7 +19,7 @@ fi
 # Create lab directory and copy compose file
 echo "Installing compose file to ${LAB_DIR}..."
 mkdir -p "$LAB_DIR"
-cp "$SCRIPT_DIR/docker-compose.lab.yml" "$LAB_DIR/docker-compose.yml"
+cp "$SCRIPT_DIR/docker-compose.lab-chamber.yml" "$LAB_DIR/docker-compose.yml"
 
 # Install systemd service
 echo "Installing systemd service..."
